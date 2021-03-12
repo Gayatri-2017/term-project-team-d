@@ -18,8 +18,9 @@ Given the fast paced environment that we are living in and the advent of the tec
    Stores the order of one food item in a restaurant made by a customer
 ##### 4. Payment:
    Stores payment-related information made by a customer for an order. 
-##### Deliveries:
+##### 5. Deliveries:
    Stores Delivery related information for an order
+
 
 
 
