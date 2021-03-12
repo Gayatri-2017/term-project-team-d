@@ -11,16 +11,17 @@ Given the fast paced environment that we are living in and the advent of the tec
 
 The entities in our application are:
 
-#### User:
+##### User:
    A use is a customer who orders food or updates other tables. 
-#### Restaurants: 
+##### Restaurants: 
    A food outlet consisting of various food items and their prices.
-#### Order:
+##### Order:
    Stores the order of one food item in a restaurant made by a customer
-#### Payment:
+##### Payment:
    Stores payment-related information made by a customer for an order. 
-#### Deliveries:
+##### Deliveries:
    Stores Delivery related information for an order
+
 
 
 
@@ -56,7 +57,7 @@ Project Organization
     └── scripts
         └── script1.sh 
 
-    --------
+------------
 
 ## Tools used
 The project intends to use the following:
