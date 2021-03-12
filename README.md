@@ -22,7 +22,6 @@ Given the fast paced environment that we are living in and the advent of the tec
    Stores Delivery related information for an order
 
 
-------------
 
 ### Operations
 
@@ -43,11 +42,13 @@ Check if a discount/offer is available for a specific order
 ##### 5. DELIVERY
 Each Order is mapped to a Delivery
 
+------------
 
 Interaction of entities with respect to operations can be shown as:
 
 ![Alt text](readme_images/operations.jpeg?raw=true )
 
+------------
 
 Project Organization
 ------------
