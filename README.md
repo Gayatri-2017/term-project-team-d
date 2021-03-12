@@ -11,7 +11,7 @@ Given the fast paced environment that we are living in and the advent of the tec
    The entities in our application are
    
 ##### 1. User:
-   A use is a customer who orders food or updates other tables.    
+   A user is a customer who orders food or updates other tables.    
 ##### 2. Restaurants: 
    A food outlet consisting of various food items and their prices.   
 ##### 3. Order:
@@ -28,6 +28,21 @@ Given the fast paced environment that we are living in and the advent of the tec
 ### Operations
 
 We have the following 5 operations defined: 
+
+##### 1. POPULATE
+The admin User can populate restaurant and user details
+
+##### 2. CART
+The User can order food from a Restaurant
+
+##### 3. BILLS
+The User can pay the Restaurant
+
+##### 4. DISCOUNT
+Check if a discount/offer is available for a specific order
+
+##### 5. DELIVERY
+Each Order is mapped to a Delivery
 
 ![Alt text](readme_images/operations.jpeg?raw=true )
 
