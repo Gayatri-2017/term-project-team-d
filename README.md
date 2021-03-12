@@ -28,7 +28,7 @@ The entities in our application are:
 
 We have the following 5 operations defined: 
 
-![Alt text](readme_images/operations.png?raw=true )
+![Alt text](readme_images/operations.jpeg?raw=true )
 
 
 Project Organization
