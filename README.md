@@ -12,15 +12,15 @@ Given the fast paced environment that we are living in and the advent of the tec
 The entities in our application are:
 
 #### User:
-        A use is a customer who orders food or updates other tables. 
+   A use is a customer who orders food or updates other tables. 
 #### Restaurants: 
-        A food outlet consisting of various food items and their prices.
+   A food outlet consisting of various food items and their prices.
 #### Order:
-        Stores the order of one food item in a restaurant made by a customer
+   Stores the order of one food item in a restaurant made by a customer
 #### Payment:
-        Stores payment-related information made by a customer for an order. 
+   Stores payment-related information made by a customer for an order. 
 #### Deliveries:
-        Stores Delivery related information for an order
+   Stores Delivery related information for an order
 
 
 
@@ -28,23 +28,33 @@ The entities in our application are:
 
 We have the following 5 operations defined: 
 
-
 ![Alt text](readme_images/operations.png?raw=true )
 
 
 Project Organization
 ------------
 
-    ├── term-project-team-d     <- Main folder containing project code folders
-    │   ├── Iac                 <- Original .csv files
-    │   ├── code    
-    |   | <- Results related to modeling and preprocessing
-    │   │   ├── eval_report     <- Classification report and figures
-    │   │   └── model_param     <- Model files and other intermediate results
-    │   │   └── prediction      <- csv iles of predictions for dev and test datasets  
-    │   ├── readme_images       <- Images for readme file
-    │   ├── README.md           <- README for this project.
-    
+    └── term-project-team-d 
+    ├── code
+    │   ├── db
+    │   ├── gatling
+    │   ├── helper
+    │   ├── logs
+    │   ├── s1
+    │   ├── s2
+    │   ├── s3
+    │   ├── s4
+    │   └── s5
+    ├── docs
+    │   └── README.md
+    ├── IaC
+    │   ├── cluster
+    │   └── Makefiles
+    ├── readme_images
+    │   └── operations.jpeg
+    ├── README.md
+    └── scripts
+        └── script1.sh 
 
     --------
 
