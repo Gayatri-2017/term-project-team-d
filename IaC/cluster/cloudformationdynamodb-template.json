@@ -92,7 +92,7 @@
 	  "tableDeliveries": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "deliveries-team-d",
+          "TableName": "delivery-team-d",
           "AttributeDefinitions": [
             {
               "AttributeName": "delivery_id",
