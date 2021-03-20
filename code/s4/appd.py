@@ -1,6 +1,6 @@
 """
 SFU CMPT 756
-Sample application---user service.
+Sample application---discount service.
 """
 
 # Standard library modules
@@ -13,8 +13,6 @@ from flask import Blueprint
 from flask import Flask
 from flask import request
 from flask import Response
-
-import jwt
 
 from prometheus_flask_exporter import PrometheusMetrics
 
@@ -32,7 +30,7 @@ metrics.info('app_info', 'User process')
 bp = Blueprint('app', __name__)
 
 db = {
-    "name": "http://team-d-cmpt756db:30000/api/v1/datastore",
+    "name": "http://host.docker.internal:30000/api/v1/datastore",
     "endpoint": [
         "read",
         "write",
@@ -88,6 +86,7 @@ def get_discount(user_id):
     dis_json = {"discount_applied": response['discount_applied']}
 
     return (dis_json)
+
 
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
