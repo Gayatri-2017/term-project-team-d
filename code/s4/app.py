@@ -32,7 +32,7 @@ metrics.info('app_info', 'User process')
 bp = Blueprint('app', __name__)
 
 db = {
-    "name": "http://team-d-cmpt756s4:30000/api/v1/datastore",
+    "name": "http://team-d-cmpt756db:30000/api/v1/datastore",
     "endpoint": [
         "read",
         "write",
