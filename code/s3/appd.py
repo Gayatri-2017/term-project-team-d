@@ -32,7 +32,7 @@ metrics.info('app_info', 'User process')
 bp = Blueprint('app', __name__)
 
 db = {
-    "name": "http://team-d-cmpt756db:30000/api/v1/datastore",
+    "name": "http://host.docker.internal:30000/api/v1/datastore",
     "endpoint": [
         "read",
         "write",
@@ -84,13 +84,15 @@ def update_user(user_id):
     return (response.json())
 
 '''
+
+
 @bp.route('/', methods=['POST'])
-def create_biils():
-    """
-    Create a bill.
-    If a record already exists with the same entries,
-    the old UUID is replaced with a new one.
-    """
+def create_bills():
+    
+    #Create a bill.
+    #If a record already exists with the same entries,
+    #the old UUID is replaced with a new one.
+    
      # check header here
     if 'Authorization' not in headers:
         return Response(json.dumps({"error": "missing auth"}), status=401,
@@ -108,7 +110,6 @@ def create_biils():
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
-
     response = requests.post(
         url,
         json={"objtype": "payment",
@@ -121,9 +122,7 @@ def create_biils():
             "restaurant_id" = restaurant_id
             })
     return (response.json())
-
    
-
 
 @bp.route('/<payment_id>', methods=['DELETE'])
 def delete_bills(payment_id):
@@ -180,8 +179,8 @@ def logoff():
     except Exception:
         return json.dumps({"message": "error reading parameters"})
     return {}
-
 '''
+
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
