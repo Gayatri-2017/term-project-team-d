@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: team-d-cmpt756db
+spec:
+  hosts:
+  - team-d-cmpt756db
+  http:
+  - match:
+    - uri:
+        prefix: /api/v1/datastore
+    rewrite:
+      uri: /api/v1/datastore
+    route:
+    - destination:
+        host: team-d-cmpt756db
+        port:
+          number: 30000
+    fault:
+       delay:
+        fixedDelay: 500ms
+        percentage:
+          value: 10
