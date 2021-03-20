@@ -1,6 +1,7 @@
 """
 SFU CMPT 756
 Sample application---user service.
+Author: Abhishek (301403301)
 """
 
 # Standard library modules
@@ -32,7 +33,7 @@ metrics.info('app_info', 'User process')
 bp = Blueprint('app', __name__)
 
 db = {
-    "name": "http://team-d-cmpt756db:30000/api/v1/datastore",
+    "name": "http://host.docker.internal:30000/api/v1/datastore",
     "endpoint": [
         "read",
         "write",
@@ -49,10 +50,12 @@ def hello_world():
             "operational. Switch to curl/Postman/etc to interact using the "
             "other HTTP verbs.")
 
+
 @bp.route('/health')
 @metrics.do_not_track()
 def health():
     return Response("", status=200, mimetype="application/json")
+
 
 @bp.route('/readiness')
 @metrics.do_not_track()
@@ -80,6 +83,7 @@ def create_delivery():
               "driver_name": driver_name,
               "predicted_delivery_time": predicted_delivery_time})
     return (response.json())
+
 
 @bp.route('/<delivery_id>', methods=['DELETE'])
 def delete_delivery(delivery_id):
