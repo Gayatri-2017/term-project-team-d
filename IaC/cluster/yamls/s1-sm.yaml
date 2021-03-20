@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: team-d-cmpt756s1
+  labels:
+    app: team-d-cmpt756s1
+    release: c756
+spec:
+  namespaceSelector:
+    matchNames:
+    - c756ns
+  selector:
+    matchLabels:
+      app: team-d-cmpt756s1
+  endpoints:
+  - port: http
+    path: /metrics
