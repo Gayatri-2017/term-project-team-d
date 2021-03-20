@@ -1,0 +1,116 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {      
+      "tableUsers": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": "user-team-d",
+          "AttributeDefinitions": [
+            {
+              "AttributeName": "user_id",
+              "AttributeType": "S"
+            }
+          ],
+          "KeySchema": [
+            {
+              "AttributeName": "user_id",
+              "KeyType": "HASH"
+            }
+          ],
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": "5",
+            "WriteCapacityUnits": "5"
+          }
+        }
+      },
+	  "tableOrders": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": "order-team-d",
+          "AttributeDefinitions": [
+            {
+              "AttributeName": "order_id",
+              "AttributeType": "S"
+            }
+          ],
+          "KeySchema": [
+            {
+              "AttributeName": "order_id",
+              "KeyType": "HASH"
+            }
+          ],
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": "5",
+            "WriteCapacityUnits": "5"
+          }
+        }
+      },
+	  "tableRestaurants": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": "restaurant-team-d",
+          "AttributeDefinitions": [
+            {
+              "AttributeName": "restaurant_id",
+              "AttributeType": "S"
+            }
+          ],
+          "KeySchema": [
+            {
+              "AttributeName": "restaurant_id",
+              "KeyType": "HASH"
+            }
+          ],
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": "5",
+            "WriteCapacityUnits": "5"
+          }
+        }
+      },
+	  "tablePayments": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": "payment-team-d",
+          "AttributeDefinitions": [
+            {
+              "AttributeName": "payment_id",
+              "AttributeType": "S"
+            }
+          ],
+          "KeySchema": [
+            {
+              "AttributeName": "payment_id",
+              "KeyType": "HASH"
+            }
+          ],
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": "5",
+            "WriteCapacityUnits": "5"
+          }
+        }
+      },
+	  "tableDeliveries": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": "deliveries-team-d",
+          "AttributeDefinitions": [
+            {
+              "AttributeName": "delivery_id",
+              "AttributeType": "S"
+            }
+          ],
+          "KeySchema": [
+            {
+              "AttributeName": "delivery_id",
+              "KeyType": "HASH"
+            }
+          ],
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": "5",
+            "WriteCapacityUnits": "5"
+          }
+        }
+      }
+    },
+    "Description": "DynamoDB tables for ZZ-AWS-ACCESS-KEY-ID"
+  }
