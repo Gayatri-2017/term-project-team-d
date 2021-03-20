@@ -4,7 +4,7 @@
       "tableUsers": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "user-team-d",
+          "TableName": "user-ZZ-REG-ID",
           "AttributeDefinitions": [
             {
               "AttributeName": "user_id",
@@ -26,7 +26,7 @@
 	  "tableOrders": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "order-team-d",
+          "TableName": "order-ZZ-REG-ID",
           "AttributeDefinitions": [
             {
               "AttributeName": "order_id",
@@ -48,7 +48,7 @@
 	  "tableRestaurants": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "restaurant-team-d",
+          "TableName": "restaurant-ZZ-REG-ID",
           "AttributeDefinitions": [
             {
               "AttributeName": "restaurant_id",
@@ -70,7 +70,7 @@
 	  "tablePayments": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "payment-team-d",
+          "TableName": "payment-ZZ-REG-ID",
           "AttributeDefinitions": [
             {
               "AttributeName": "payment_id",
@@ -92,7 +92,7 @@
 	  "tableDeliveries": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "delivery-team-d",
+          "TableName": "delivery-ZZ-REG-ID",
           "AttributeDefinitions": [
             {
               "AttributeName": "delivery_id",
