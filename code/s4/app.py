@@ -59,7 +59,7 @@ def health():
 def readiness():
     return Response("", status=200, mimetype="application/json")
 
-bp.route('/input_provided', methods=['GET'])
+bp.route('/show_discount', methods=['GET'])
 def get_discount():
     headers = request.headers
     # check header here
