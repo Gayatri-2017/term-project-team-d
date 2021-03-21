@@ -35,7 +35,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: svc-s1
+  name: svc-s4
   labels:
     account: SVC_S4
 ---
@@ -54,14 +54,14 @@ spec:
       version: v1
   template:
     metadata:
-      name: service1-pod
+      name: service4-pod
       labels:
         app: team-d-cmpt756s4
         version: v1
     spec:
       serviceAccountName: svc-s4
       containers:
-      - name: service1
+      - name: service4
         image: ZZ-CR-ID/ZZ-REG-ID/team-d-cmpt756s4:latest
         imagePullPolicy: Always
         ports:

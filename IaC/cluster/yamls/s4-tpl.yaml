@@ -48,7 +48,7 @@ spec:
       version: v1
   template:
     metadata:
-      name: service1-pod
+      name: service4-pod
       labels:
         app: team-d-cmpt756s4
         version: v1
@@ -62,14 +62,14 @@ spec:
         - containerPort: 30004
         livenessProbe:
           httpGet:
-            path: /api/v1/user/health
+            path: /api/v1/discount/health
             port: 30004
           initialDelaySeconds: 10
           periodSeconds: 5
           failureThreshold: 5
         readinessProbe:
           httpGet:
-            path: /api/v1/user/readiness
+            path: /api/v1/discount/readiness
             port: 30004
           initialDelaySeconds: 10
           periodSeconds: 5
