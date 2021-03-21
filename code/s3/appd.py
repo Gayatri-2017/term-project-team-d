@@ -41,7 +41,6 @@ db = {
     ]
 }
 
-'''
 @bp.route('/', methods=['GET'])
 @metrics.do_not_track()
 def hello_world():
@@ -60,30 +59,6 @@ def health():
 @metrics.do_not_track()
 def readiness():
     return Response("", status=200, mimetype="application/json")
-
-
-@bp.route('/<user_id>', methods=['PUT'])
-def update_user(user_id):
-    headers = request.headers
-    # check header here
-    if 'Authorization' not in headers:
-        return Response(json.dumps({"error": "missing auth"}), status=401,
-                        mimetype='application/json')
-    try:
-        content = request.get_json()
-        email = content['email']
-        fname = content['fname']
-        lname = content['lname']
-    except Exception:
-        return json.dumps({"message": "error reading arguments"})
-    url = db['name'] + '/' + db['endpoint'][3]
-    response = requests.put(
-        url,
-        params={"objtype": "user", "objkey": user_id},
-        json={"email": email, "fname": fname, "lname": lname})
-    return (response.json())
-
-'''
 
 
 @bp.route('/', methods=['POST'])
@@ -114,13 +89,13 @@ def create_bills():
     response = requests.post(
         url,
         json={"objtype": "payment",
-        "payment_method" = payment_method,
-        "discount_applied" = discount_applied,
-        "payment_amount"= payment_amount,
-        "food_name" = food_name,
-        "customer_id" = customer_id,
-        "order_id" = order_id,
-        "restaurant_id" = restaurant_id
+            "payment_method": payment_method,
+            "discount_applied": discount_applied,
+            "payment_amount":payment_amount,
+            "food_name":food_name,
+            "customer_id":customer_id,
+            "order_id":order_id,
+            "restaurant_id":restaurant_id
             })
     return (response.json())
 
@@ -138,49 +113,6 @@ def delete_bills(payment_id):
     response = requests.delete(url,
                                params={"objtype": "payment", "objkey": payment_id})
     return (response.json())
-
-'''
-@bp.route('/<user_id>', methods=['GET'])
-def get_user(user_id):
-    headers = request.headers
-    # check header here
-    if 'Authorization' not in headers:
-        return Response(
-            json.dumps({"error": "missing auth"}),
-            status=401,
-            mimetype='application/json')
-    payload = {"objtype": "user", "objkey": user_id}
-    url = db['name'] + '/' + db['endpoint'][0]
-    response = requests.get(url, params=payload)
-    return (response.json())
-
-
-@bp.route('/login', methods=['PUT'])
-def login():
-    try:
-        content = request.get_json()
-        uid = content['uid']
-    except Exception:
-        return json.dumps({"message": "error reading parameters"})
-    url = db['name'] + '/' + db['endpoint'][0]
-    response = requests.get(url, params={"objtype": "user", "objkey": uid})
-    data = response.json()
-    if len(data['Items']) > 0:
-        encoded = jwt.encode({'user_id': uid, 'time': time.time()},
-                             'secret',
-                             algorithm='HS256')
-    return encoded
-
-
-@bp.route('/logoff', methods=['PUT'])
-def logoff():
-    try:
-        content = request.get_json()
-        _ = content['jwt']
-    except Exception:
-        return json.dumps({"message": "error reading parameters"})
-    return {}
-'''
 
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
