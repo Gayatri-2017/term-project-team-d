@@ -1,0 +1,37 @@
+# ALL THE VARIABLES IN THIS FILE MUST BE SPECIFIED IN THIS ORDER
+# The default container registry for this course is GitHub Container Registry (GHCR)
+# If you need to use a different registry, replace this.
+# CAUTION:  docker.io restricts the pull rate from free accounts
+#
+ZZ-CR-ID=ghcr.io
+#
+# Your userid for the container registry named above
+# As we are using GitHub's container registry, this is your GitHub username (lowercase)
+#
+ZZ-REG-ID=scp-2021-jan-cmpt-756
+#
+# The home directory for the version of Java to run Gatling.
+# Typically you can just use your regular Java version but
+# a few versions of Java cannot run Gatling
+# This path must *not* contain any whitespace!
+#
+ZZ-JAVA-HOME=
+#
+# The directory where Gatling is installed
+# Again, this path must *not* contain any whitespace!
+#
+ZZ-GAT-DIR=
+#
+# If you are running DynamoDB from an AWS starter ID, you must specify us-east-1
+# as your region.  If you are running from a regular AWS ID, you may specify
+# any region.  us-west-2 is the AWS region closest to Vancouver and therefore
+# will have the lowest geolatency.
+#
+ZZ-AWS-REGION=
+ZZ-AWS-ACCESS-KEY-ID=
+ZZ-AWS-SECRET-ACCESS-KEY=
+#
+# A session token is only required if you run DynamoDB from a starter ID.
+# If you are running from a regular AWS ID, leave the following blank
+#
+ZZ-AWS-SESSION-TOKEN=
