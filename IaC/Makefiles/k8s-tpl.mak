@@ -22,7 +22,7 @@ JAVA_HOME=ZZ-JAVA-HOME
 GAT_DIR=ZZ-GAT-DIR
 
 # Keep all the logs out of main directory
-LOG_DIR=logs
+LOG_DIR=../logs
 
 # These should be in your search path
 KC=kubectl

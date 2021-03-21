@@ -16,7 +16,7 @@ KC=kubectl
 CURL=curl
 
 # Keep all the logs out of main directory
-LOG_DIR=logs
+LOG_DIR=../logs
 
 # look these up with 'make ls'
 # You need to specify the container because istio injects side-car container

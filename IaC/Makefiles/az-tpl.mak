@@ -19,7 +19,7 @@ AKS=$(AZ) aks
 KC=kubectl
 
 # Keep all the logs out of main directory
-LOG_DIR=logs
+LOG_DIR=../logs
 
 # these might need to change
 GRP=c756ns
