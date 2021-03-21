@@ -164,6 +164,95 @@ def logoff():
     return {}
 
 
+
+
+#updates the record in restaurant table
+
+@bp.route('/restaurant/<restaurant_id>', methods=['PUT'])
+def update_restaurant(restaurant_id):
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(json.dumps({"error": "missing auth"}), status=401,
+                        mimetype='application/json')
+    try:
+        content = request.get_json()
+        restaurant_name = content['restaurant_name']
+        food_name = content['food_name']
+        food_price = content['food_price']
+    except Exception:
+        return json.dumps({"message": "error reading arguments"})
+    url = db['name'] + '/' + db['endpoint'][3]
+    response = requests.put(
+        url,
+        params={"objtype": "restaurant", "objkey": restaurant_id},
+        json={"restaurant_name": restaurant_name, "food_name": food_name, "food_price": food_price})
+    return (response.json())
+
+
+
+
+@bp.route('/restaurant', methods=['POST'])
+def create_restaurant():
+    """
+    create restaurant
+    If a record already exists with the same restaurant_name, food_name and food_price,
+    the old UUID is replaced with a new one.
+    """
+    try:
+        content = request.get_json()
+        restaurant_name = content['restaurant_name']
+        food_name = content['food_name']
+        food_price = content['food_price']
+    except Exception:
+        return json.dumps({"message": "error reading arguments"})
+    url = db['name'] + '/' + db['endpoint'][1]
+    response = requests.post(
+        url,
+        json={"objtype": "restaurant",
+              "restaurant_name":restaurant_name
+              "food_name": food_name,
+              "food_price": food_price,
+              })
+    return (response.json())
+
+
+
+#delets the record in restaurant table
+@bp.route('/restaurant/<restaurant_id>', methods=['DELETE'])
+def delete_restaurant(restaurant_id):
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(json.dumps({"error": "missing auth"}),
+                        status=401,
+                        mimetype='application/json')
+    url = db['name'] + '/' + db['endpoint'][2]
+    
+    response = requests.delete(url,
+                               params={"objtype": "restaurant", "objkey": restaurant_id})
+    return (response.json())
+
+
+#gets the record in restaurant table
+@bp.route('/restaurant/<restaurant_id>', methods=['GET'])
+def get_restaurant(restaurant_id):
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(
+            json.dumps({"error": "missing auth"}),
+            status=401,
+            mimetype='application/json')  
+
+    payload = {"objtype": "restaurant", "objkey": restaurant_id}
+    url = db['name'] + '/' + db['endpoint'][0]
+    response = requests.get(url, prams=payload)
+    return (response.json())
+
+
+
+
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
