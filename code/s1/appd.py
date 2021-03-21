@@ -214,7 +214,7 @@ def create_restaurant():
     response = requests.post(
         url,
         json={"objtype": "restaurant",
-              "restaurant_name":restaurant_name
+              "restaurant_name":restaurant_name,
               "food_name": food_name,
               "food_price": food_price,
               })
