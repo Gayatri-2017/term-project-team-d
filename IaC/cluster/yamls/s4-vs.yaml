@@ -13,9 +13,9 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /api/v1/user
+        prefix: /api/v1/discount
     rewrite:
-      uri: /api/v1/user
+      uri: /api/v1/discount
     route:
     - destination:
         host: team-d-cmpt756s4

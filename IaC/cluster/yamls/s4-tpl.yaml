@@ -29,9 +29,9 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: svc-s1
+  name: svc-s4
   labels:
-    account: SVC_S1
+    account: SVC_S4
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -48,12 +48,12 @@ spec:
       version: v1
   template:
     metadata:
-      name: service1-pod
+      name: service4-pod
       labels:
         app: team-d-cmpt756s4
         version: v1
     spec:
-      serviceAccountName: svc-s1
+      serviceAccountName: svc-s4
       containers:
       - name: team-d-cmpt756s4
         image: ZZ-CR-ID/ZZ-REG-ID/team-d-cmpt756s4:v1
@@ -62,14 +62,14 @@ spec:
         - containerPort: 30004
         livenessProbe:
           httpGet:
-            path: /api/v1/user/health
+            path: /api/v1/discount/health
             port: 30004
           initialDelaySeconds: 10
           periodSeconds: 5
           failureThreshold: 5
         readinessProbe:
           httpGet:
-            path: /api/v1/user/readiness
+            path: /api/v1/discount/readiness
             port: 30004
           initialDelaySeconds: 10
           periodSeconds: 5

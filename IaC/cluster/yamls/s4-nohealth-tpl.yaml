@@ -27,7 +27,7 @@ metadata:
     app: team-d-cmpt756s4
 spec:
   ports:
-  - port: 30000
+  - port: 30004
     name: http
   selector:
     app: team-d-cmpt756s4
@@ -35,9 +35,9 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: svc-s1
+  name: svc-s4
   labels:
-    account: SVC_S1
+    account: SVC_S4
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,14 +54,14 @@ spec:
       version: v1
   template:
     metadata:
-      name: service1-pod
+      name: service4-pod
       labels:
         app: team-d-cmpt756s4
         version: v1
     spec:
-      serviceAccountName: svc-s1
+      serviceAccountName: svc-s4
       containers:
-      - name: service1
+      - name: service4
         image: ZZ-CR-ID/ZZ-REG-ID/team-d-cmpt756s4:latest
         imagePullPolicy: Always
         ports:
