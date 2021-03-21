@@ -27,7 +27,7 @@ metadata:
     app: team-d-cmpt756s4
 spec:
   ports:
-  - port: 30000
+  - port: 30004
     name: http
   selector:
     app: team-d-cmpt756s4
