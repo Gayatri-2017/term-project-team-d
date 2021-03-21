@@ -88,11 +88,11 @@ def update_user(user_id):
 
 @bp.route('/', methods=['POST'])
 def create_bills():
-    
+
     #Create a bill.
     #If a record already exists with the same entries,
     #the old UUID is replaced with a new one.
-    
+
      # check header here
     if 'Authorization' not in headers:
         return Response(json.dumps({"error": "missing auth"}), status=401,
@@ -113,16 +113,16 @@ def create_bills():
     response = requests.post(
         url,
         json={"objtype": "payment",
-              "payment_method" = payment_method
-             "discount_applied" = discount_applied
-             "payment_amount"= payment_amount
-            "food_name" = food_name
-            "customer_id" = customer_id
-            "order_id" = order_id
-            "restaurant_id" = restaurant_id
+        "payment_method" = payment_method,
+        "discount_applied" = discount_applied,
+        "payment_amount"= payment_amount,
+        "food_name" = food_name,
+        "customer_id" = customer_id,
+        "order_id" = order_id,
+        "restaurant_id" = restaurant_id
             })
     return (response.json())
-   
+
 
 @bp.route('/<payment_id>', methods=['DELETE'])
 def delete_bills(payment_id):

@@ -112,17 +112,17 @@ def create_biils():
     response = requests.post(
         url,
         json={"objtype": "payment",
-              "payment_method" = payment_method
-             "discount_applied" = discount_applied
-             "payment_amount"= payment_amount
-            "food_name" = food_name
-            "customer_id" = customer_id
-            "order_id" = order_id
-            "restaurant_id" = restaurant_id
+        "payment_method" = payment_method,
+        "discount_applied" = discount_applied,
+        "payment_amount"= payment_amount,
+        "food_name" = food_name,
+        "customer_id" = customer_id,
+        "order_id" = order_id,
+        "restaurant_id" = restaurant_id
             })
     return (response.json())
 
-   
+
 
 
 @bp.route('/<payment_id>', methods=['DELETE'])
