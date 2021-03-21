@@ -58,6 +58,12 @@ SIM_FULL_NAME=$(SIM_PACKAGE).$(SIM_NAME)
 APP_NS=c756ns
 ISTIO_NS=istio-system
 
+# file path for the docker path
+CODE_PATH=../../code
+
+# path to the YAML files 
+YAML_PATH=../cluster/yamls
+
 # ----------------------------------------------------------------------------------------
 # -------  Targets to be invoked directly from command line                        -------
 # ----------------------------------------------------------------------------------------
@@ -67,7 +73,7 @@ ISTIO_NS=istio-system
 # This is the only entry that *must* be run from k8s-tpl.mak
 # (because it creates k8s.mak)
 templates:
-	tools/process-templates.sh
+	../../scripts/process-templates.sh
 
 # --- provision: Provision the entire stack
 # This typically is all you need to do to install the sample application and
@@ -77,12 +83,13 @@ templates:
 # 1. Templates have been instantiated (make -f k8s-tpl.mak templates)
 # 2. Current context is a running Kubernetes cluster (make -f {az,eks,gcp,mk}.mak start)
 #
-provision: istio prom kiali deploy
+#provision: istio prom kiali deploy
+provision: istio deploy
 
 # --- deploy: Deploy and monitor the three microservices
 # Use `provision` to deploy the entire stack (including Istio, Prometheus, ...).
 # This target only deploys the sample microservices
-deploy: appns gw s1 s2 db monitoring
+deploy: appns gw s1 db 
 	$(KC) -n $(APP_NS) get gw,vs,deploy,svc,pods
 
 # --- rollout: Rollout new deployments of all microservices
@@ -292,7 +299,7 @@ monvs: cluster/monitoring-virtualservice.yaml
 	$(KC) -n $(ISTIO_NS) apply -f $< > $(LOG_DIR)/monvs.log
 
 # Update service gateway
-gw: cluster/service-gateway.yaml
+gw: $(YAML_PATH)/service-gateway.yaml
 	$(KC) -n $(APP_NS) apply -f $< > $(LOG_DIR)/gw.log
 
 # Start DynamoDB at the default read and write rates
@@ -302,10 +309,10 @@ $(LOG_DIR)/dynamodb-init.log: cluster/cloudformationdynamodb.json
 	$(AWS) cloudformation create-stack --stack-name db-ZZ-REG-ID --template-body file://$< || true | tee $(LOG_DIR)/dynamodb-init.log
 
 # Update S1 and associated monitoring, rebuilding if necessary
-s1: $(LOG_DIR)/s1.repo.log cluster/s1.yaml cluster/s1-sm.yaml cluster/s1-vs.yaml
-	$(KC) -n $(APP_NS) apply -f cluster/s1.yaml | tee $(LOG_DIR)/s1.log
-	$(KC) -n $(APP_NS) apply -f cluster/s1-sm.yaml | tee -a $(LOG_DIR)/s1.log
-	$(KC) -n $(APP_NS) apply -f cluster/s1-vs.yaml | tee -a $(LOG_DIR)/s1.log
+s1: $(LOG_DIR)/s1.repo.log $(YAML_PATH)/s1.yaml $(YAML_PATH)/s1-sm.yaml $(YAML_PATH)/s1-vs.yaml
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s1.yaml | tee $(LOG_DIR)/s1.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s1-sm.yaml | tee -a $(LOG_DIR)/s1.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s1-vs.yaml | tee -a $(LOG_DIR)/s1.log
 
 # Update S2 and associated monitoring, rebuilding if necessary
 s2: rollout-s2 cluster/s2-svc.yaml cluster/s2-sm.yaml cluster/s2-vs-$(S2_VER).yaml
@@ -314,20 +321,20 @@ s2: rollout-s2 cluster/s2-svc.yaml cluster/s2-sm.yaml cluster/s2-vs-$(S2_VER).ya
 	$(KC) -n $(APP_NS) apply -f cluster/s2-vs-$(S2_VER).yaml | tee -a $(LOG_DIR)/s2.log
 
 # Update DB and associated monitoring, rebuilding if necessary
-db: $(LOG_DIR)/db.repo.log cluster/awscred.yaml cluster/dynamodb-service-entry.yaml cluster/db.yaml cluster/db-sm.yaml cluster/db-vs.yaml
-	$(KC) -n $(APP_NS) apply -f cluster/awscred.yaml | tee $(LOG_DIR)/db.log
-	$(KC) -n $(APP_NS) apply -f cluster/dynamodb-service-entry.yaml | tee -a $(LOG_DIR)/db.log
-	$(KC) -n $(APP_NS) apply -f cluster/db.yaml | tee -a $(LOG_DIR)/db.log
-	$(KC) -n $(APP_NS) apply -f cluster/db-sm.yaml | tee -a $(LOG_DIR)/db.log
-	$(KC) -n $(APP_NS) apply -f cluster/db-vs.yaml | tee -a $(LOG_DIR)/db.log
+db: $(LOG_DIR)/db.repo.log $(YAML_PATH)/awscred.yaml $(YAML_PATH)/dynamodb-service-entry.yaml $(YAML_PATH)/db.yaml $(YAML_PATH)/db-sm.yaml $(YAML_PATH)/db-vs.yaml
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/awscred.yaml | tee $(LOG_DIR)/db.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/dynamodb-service-entry.yaml | tee -a $(LOG_DIR)/db.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/db.yaml | tee -a $(LOG_DIR)/db.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/db-sm.yaml | tee -a $(LOG_DIR)/db.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/db-vs.yaml | tee -a $(LOG_DIR)/db.log
 
 # Build & push the images up to the CR
 cri: $(LOG_DIR)/s1.repo.log $(LOG_DIR)/s2-$(S2_VER).repo.log $(LOG_DIR)/db.repo.log
 
 # Build the s1 service
-$(LOG_DIR)/s1.repo.log: s1/Dockerfile s1/app.py s1/requirements.txt
-	$(DK) build -t $(CREG)/$(REGID)/cmpt756s1:$(APP_VER_TAG) s1 | tee $(LOG_DIR)/s1.img.log
-	$(DK) push $(CREG)/$(REGID)/cmpt756s1:$(APP_VER_TAG) | tee $(LOG_DIR)/s1.repo.log
+$(LOG_DIR)/s1.repo.log: $(CODE_PATH)/s1/Dockerfile $(CODE_PATH)/s1/app.py $(CODE_PATH)/s1/requirements.txt
+	$(DK) build -t $(CREG)/$(REGID)/team-d-cmpt756s1:$(APP_VER_TAG) $(CODE_PATH)/s1 | tee $(LOG_DIR)/s1.img.log
+	$(DK) push $(CREG)/$(REGID)/team-d-cmpt756s1:$(APP_VER_TAG) | tee $(LOG_DIR)/s1.repo.log
 
 # Build the s2 service
 $(LOG_DIR)/s2-$(S2_VER).repo.log: s2/$(S2_VER)/Dockerfile s2/$(S2_VER)/app.py s2/$(S2_VER)/requirements.txt
@@ -335,9 +342,9 @@ $(LOG_DIR)/s2-$(S2_VER).repo.log: s2/$(S2_VER)/Dockerfile s2/$(S2_VER)/app.py s2
 	$(DK) push $(CREG)/$(REGID)/cmpt756s2:$(S2_VER) | tee $(LOG_DIR)/s2-$(S2_VER).repo.log
 
 # Build the db service
-$(LOG_DIR)/db.repo.log: db/Dockerfile db/app.py db/requirements.txt
-	$(DK) build -t $(CREG)/$(REGID)/cmpt756db:$(APP_VER_TAG) db | tee $(LOG_DIR)/db.img.log
-	$(DK) push $(CREG)/$(REGID)/cmpt756db:$(APP_VER_TAG) | tee $(LOG_DIR)/db.repo.log
+$(LOG_DIR)/db.repo.log: $(CODE_PATH)/db/Dockerfile $(CODE_PATH)/db/app.py $(CODE_PATH)/db/requirements.txt
+	$(DK) build -t $(CREG)/$(REGID)/team-d-cmpt756db:$(APP_VER_TAG) $(CODE_PATH)/db | tee $(LOG_DIR)/db.img.log
+	$(DK) push $(CREG)/$(REGID)/team-d-cmpt756db:$(APP_VER_TAG) | tee $(LOG_DIR)/db.repo.log
 
 # Build the loader
 $(LOG_DIR)/loader.repo.log: loader/app.py loader/requirements.txt loader/Dockerfile
