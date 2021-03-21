@@ -1,6 +1,7 @@
 """
 SFU CMPT 756
-Sample application---discount service.
+Sample application---user service.
+Author: Abhishek (301403301)
 """
 
 # Standard library modules
@@ -13,6 +14,8 @@ from flask import Blueprint
 from flask import Flask
 from flask import request
 from flask import Response
+
+import jwt
 
 from prometheus_flask_exporter import PrometheusMetrics
 
@@ -87,11 +90,10 @@ def get_discount(user_id):
 
     return (dis_json)
 
-
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
-app.register_blueprint(bp, url_prefix='/api/v1/payment/')
+app.register_blueprint(bp, url_prefix='/api/v1/discount/')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:

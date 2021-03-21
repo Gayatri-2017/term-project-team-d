@@ -49,19 +49,17 @@ def hello_world():
             "operational. Switch to curl/Postman/etc to interact using the "
             "other HTTP verbs.")
 
-
 @bp.route('/health')
 @metrics.do_not_track()
 def health():
     return Response("", status=200, mimetype="application/json")
-
 
 @bp.route('/readiness')
 @metrics.do_not_track()
 def readiness():
     return Response("", status=200, mimetype="application/json")
 
-@bp.route('/<payment_id>', methods=['GET'])
+bp.route('/<payment_id>', methods=['GET'])
 def get_discount(user_id):
     headers = request.headers
     # check header here
@@ -92,7 +90,7 @@ def get_discount(user_id):
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
-app.register_blueprint(bp, url_prefix='/api/v1/payment/')
+app.register_blueprint(bp, url_prefix='/api/v1/discount/')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
