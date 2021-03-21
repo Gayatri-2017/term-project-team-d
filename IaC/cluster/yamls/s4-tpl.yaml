@@ -29,9 +29,9 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: svc-s1
+  name: svc-s4
   labels:
-    account: SVC_S1
+    account: SVC_S4
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -53,7 +53,7 @@ spec:
         app: team-d-cmpt756s4
         version: v1
     spec:
-      serviceAccountName: svc-s1
+      serviceAccountName: svc-s4
       containers:
       - name: team-d-cmpt756s4
         image: ZZ-CR-ID/ZZ-REG-ID/team-d-cmpt756s4:v1
