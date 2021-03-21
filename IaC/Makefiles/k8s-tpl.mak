@@ -61,7 +61,7 @@ ISTIO_NS=istio-system
 # file path for the docker path
 CODE_PATH=../../code
 
-# path to the YAML files 
+# path to the YAML files
 YAML_PATH=../cluster/yamls
 
 # ----------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ provision: istio deploy
 # --- deploy: Deploy and monitor the three microservices
 # Use `provision` to deploy the entire stack (including Istio, Prometheus, ...).
 # This target only deploys the sample microservices
-deploy: appns gw s1 db 
+deploy: appns gw s1 s3 s4 s5 db
 	$(KC) -n $(APP_NS) get gw,vs,deploy,svc,pods
 
 # --- rollout: Rollout new deployments of all microservices
@@ -314,11 +314,38 @@ s1: $(LOG_DIR)/s1.repo.log $(YAML_PATH)/s1.yaml $(YAML_PATH)/s1-sm.yaml $(YAML_P
 	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s1-sm.yaml | tee -a $(LOG_DIR)/s1.log
 	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s1-vs.yaml | tee -a $(LOG_DIR)/s1.log
 
+
 # Update S2 and associated monitoring, rebuilding if necessary
-s2: rollout-s2 cluster/s2-svc.yaml cluster/s2-sm.yaml cluster/s2-vs-$(S2_VER).yaml
-	$(KC) -n $(APP_NS) apply -f cluster/s2-svc.yaml | tee $(LOG_DIR)/s2.log
-	$(KC) -n $(APP_NS) apply -f cluster/s2-sm.yaml | tee -a $(LOG_DIR)/s2.log
-	$(KC) -n $(APP_NS) apply -f cluster/s2-vs-$(S2_VER).yaml | tee -a $(LOG_DIR)/s2.log
+s2: $(LOG_DIR)/s2.repo.log $(YAML_PATH)/s2.yaml $(YAML_PATH)/s2-sm.yaml $(YAML_PATH)/s2-vs.yaml
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s2.yaml | tee $(LOG_DIR)/s2.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s2-sm.yaml | tee -a $(LOG_DIR)/s2.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s2-vs.yaml | tee -a $(LOG_DIR)/s2.log
+
+# Update S3 and associated monitoring, rebuilding if necessary
+s3: $(LOG_DIR)/s3.repo.log $(YAML_PATH)/s3.yaml $(YAML_PATH)/s3-sm.yaml $(YAML_PATH)/s3-vs.yaml
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s3.yaml | tee $(LOG_DIR)/s3.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s3-sm.yaml | tee -a $(LOG_DIR)/s3.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s3-vs.yaml | tee -a $(LOG_DIR)/s3.log
+
+
+# Update S4 and associated monitoring, rebuilding if necessary
+s4: $(LOG_DIR)/s4.repo.log $(YAML_PATH)/s4.yaml $(YAML_PATH)/s4-sm.yaml $(YAML_PATH)/s4-vs.yaml
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s4.yaml | tee $(LOG_DIR)/s4.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s4-sm.yaml | tee -a $(LOG_DIR)/s4.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s4-vs.yaml | tee -a $(LOG_DIR)/s4.log
+
+
+# Update S5 and associated monitoring, rebuilding if necessary
+s5: $(LOG_DIR)/s5.repo.log $(YAML_PATH)/s5.yaml $(YAML_PATH)/s5-sm.yaml $(YAML_PATH)/s5-vs.yaml
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s5.yaml | tee $(LOG_DIR)/s5.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s5-sm.yaml | tee -a $(LOG_DIR)/s5.log
+	$(KC) -n $(APP_NS) apply -f $(YAML_PATH)/s5-vs.yaml | tee -a $(LOG_DIR)/s5.log
+
+# # Update S2 and associated monitoring, rebuilding if necessary
+# s2: rollout-s2 cluster/s2-svc.yaml cluster/s2-sm.yaml cluster/s2-vs-$(S2_VER).yaml
+# 	$(KC) -n $(APP_NS) apply -f cluster/s2-svc.yaml | tee $(LOG_DIR)/s2.log
+# 	$(KC) -n $(APP_NS) apply -f cluster/s2-sm.yaml | tee -a $(LOG_DIR)/s2.log
+# 	$(KC) -n $(APP_NS) apply -f cluster/s2-vs-$(S2_VER).yaml | tee -a $(LOG_DIR)/s2.log
 
 # Update DB and associated monitoring, rebuilding if necessary
 db: $(LOG_DIR)/db.repo.log $(YAML_PATH)/awscred.yaml $(YAML_PATH)/dynamodb-service-entry.yaml $(YAML_PATH)/db.yaml $(YAML_PATH)/db-sm.yaml $(YAML_PATH)/db-vs.yaml
@@ -337,9 +364,29 @@ $(LOG_DIR)/s1.repo.log: $(CODE_PATH)/s1/Dockerfile $(CODE_PATH)/s1/app.py $(CODE
 	$(DK) push $(CREG)/$(REGID)/team-d-cmpt756s1:$(APP_VER_TAG) | tee $(LOG_DIR)/s1.repo.log
 
 # Build the s2 service
-$(LOG_DIR)/s2-$(S2_VER).repo.log: s2/$(S2_VER)/Dockerfile s2/$(S2_VER)/app.py s2/$(S2_VER)/requirements.txt
-	$(DK) build -t $(CREG)/$(REGID)/cmpt756s2:$(S2_VER) s2/$(S2_VER) | tee $(LOG_DIR)/s2-$(S2_VER).img.log
-	$(DK) push $(CREG)/$(REGID)/cmpt756s2:$(S2_VER) | tee $(LOG_DIR)/s2-$(S2_VER).repo.log
+$(LOG_DIR)/s2.repo.log: $(CODE_PATH)/s2/Dockerfile $(CODE_PATH)/s2/app.py $(CODE_PATH)/s2/requirements.txt
+	$(DK) build -t $(CREG)/$(REGID)/team-d-cmpt756s2:$(APP_VER_TAG) $(CODE_PATH)/s2 | tee $(LOG_DIR)/s2.img.log
+	$(DK) push $(CREG)/$(REGID)/team-d-cmpt756s2:$(APP_VER_TAG) | tee $(LOG_DIR)/s2.repo.log
+
+# Build the s3 service
+$(LOG_DIR)/s3.repo.log: $(CODE_PATH)/s3/Dockerfile $(CODE_PATH)/s3/app.py $(CODE_PATH)/s3/requirements.txt
+	$(DK) build -t $(CREG)/$(REGID)/team-d-cmpt756s3:$(APP_VER_TAG) $(CODE_PATH)/s3 | tee $(LOG_DIR)/s3.img.log
+	$(DK) push $(CREG)/$(REGID)/team-d-cmpt756s3:$(APP_VER_TAG) | tee $(LOG_DIR)/s3.repo.log
+
+# Build the s4 service
+$(LOG_DIR)/s4.repo.log: $(CODE_PATH)/s4/Dockerfile $(CODE_PATH)/s4/app.py $(CODE_PATH)/s4/requirements.txt
+	$(DK) build -t $(CREG)/$(REGID)/team-d-cmpt756s4:$(APP_VER_TAG) $(CODE_PATH)/s4 | tee $(LOG_DIR)/s4.img.log
+	$(DK) push $(CREG)/$(REGID)/team-d-cmpt756s4:$(APP_VER_TAG) | tee $(LOG_DIR)/s4.repo.log
+
+# Build the s5 service
+$(LOG_DIR)/s5.repo.log: $(CODE_PATH)/s5/Dockerfile $(CODE_PATH)/s5/app.py $(CODE_PATH)/s5/requirements.txt
+	$(DK) build -t $(CREG)/$(REGID)/team-d-cmpt756s5:$(APP_VER_TAG) $(CODE_PATH)/s5 | tee $(LOG_DIR)/s5.img.log
+	$(DK) push $(CREG)/$(REGID)/team-d-cmpt756s5:$(APP_VER_TAG) | tee $(LOG_DIR)/s5.repo.log
+
+# # Build the s2 service
+# $(LOG_DIR)/s2-$(S2_VER).repo.log: s2/$(S2_VER)/Dockerfile s2/$(S2_VER)/app.py s2/$(S2_VER)/requirements.txt
+# 	$(DK) build -t $(CREG)/$(REGID)/cmpt756s2:$(S2_VER) s2/$(S2_VER) | tee $(LOG_DIR)/s2-$(S2_VER).img.log
+# 	$(DK) push $(CREG)/$(REGID)/cmpt756s2:$(S2_VER) | tee $(LOG_DIR)/s2-$(S2_VER).repo.log
 
 # Build the db service
 $(LOG_DIR)/db.repo.log: $(CODE_PATH)/db/Dockerfile $(CODE_PATH)/db/app.py $(CODE_PATH)/db/requirements.txt

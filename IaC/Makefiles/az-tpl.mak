@@ -33,7 +33,7 @@ NTYPE=Standard_A2_v2
 REGION=canadacentral
 # use $(AKS) get-versions --location $(REGION) to find available versions
 # This version is supported for canadacentral
-KVER=1.19.3
+KVER=1.19.6
 
 #
 # Note that get-credentials fetches the access credentials for the managed Kubernetes cluster and inserts it
@@ -65,7 +65,7 @@ up:
 
 down:
 	@echo "NOT YET IMPLEMENTED"
-	exit 1	
+	exit 1
 
 # Show current context and all Azure clusters
 # This currently duplicates target "status"
