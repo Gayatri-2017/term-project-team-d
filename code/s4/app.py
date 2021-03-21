@@ -59,8 +59,8 @@ def health():
 def readiness():
     return Response("", status=200, mimetype="application/json")
 
-bp.route('/<payment_id>', methods=['GET'])
-def get_discount(user_id):
+bp.route('/input_provided', methods=['GET'])
+def get_discount():
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -69,13 +69,9 @@ def get_discount(user_id):
             status=401,
             mimetype='application/json')
 
-    try:
-        content = requests.get_json()
-        payment_id = content["payment_id"]
-        order_id = content["order_id"]
-        user_id = content["payment_id"]
-    except Exception:
-        return json.dumps({"message": "error reading arguments"})
+    payment_id = request.args.get('payment_id')
+    order_id  = request.args.get('order_id')
+    user_id = request.args.get('user_id')
 
     payload = {"objtype": "payment",
                 "objkey": payment_id}

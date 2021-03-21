@@ -79,7 +79,7 @@ def create_bills():
         discount_applied = content['discount_applied']
         payment_amount = content['payment_amount']
         food_name = content['food_name']
-        customer_id = content['customer_id']
+        user_id = content['user_id']
         order_id = content['order_id']
         restaurant_id = content['restaurant_id']
 
@@ -93,7 +93,7 @@ def create_bills():
             "discount_applied": discount_applied,
             "payment_amount":payment_amount,
             "food_name":food_name,
-            "customer_id":customer_id,
+            "user_id":user_id,
             "order_id":order_id,
             "restaurant_id":restaurant_id
             })

@@ -139,7 +139,7 @@ def get_user(user_id):
             mimetype='application/json')  
     payload = {"objtype": "user", "objkey": user_id}
     url = db['name'] + '/' + db['endpoint'][0]
-    response = requests.get(url, prams=payload)
+    response = requests.get(url, params=payload)
     return (response.json())
 
 
@@ -251,7 +251,7 @@ def get_restaurant(restaurant_id):
 
     payload = {"objtype": "restaurant", "objkey": restaurant_id}
     url = db['name'] + '/' + db['endpoint'][0]
-    response = requests.get(url, prams=payload)
+    response = requests.get(url, params=payload)
     return (response.json())
 
 
