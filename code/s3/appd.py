@@ -92,7 +92,8 @@ def create_bills():
     #Create a bill.
     #If a record already exists with the same entries,
     #the old UUID is replaced with a new one.
-
+    
+    headers = request.headers
      # check header here
     if 'Authorization' not in headers:
         return Response(json.dumps({"error": "missing auth"}), status=401,
