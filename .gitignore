@@ -1,0 +1,16 @@
+IaC/cluster/cloudformationdynamodb.json
+IaC/cluster/tpl-vars.txt
+IaC/cluster/yamls/awscred.yaml
+IaC/cluster/yamls/db-nohealth.yaml
+IaC/cluster/yamls/db.yaml
+IaC/cluster/yamls/dynamodb-service-entry.yaml
+IaC/cluster/yamls/s1-nohealth.yaml
+IaC/cluster/yamls/s1.yaml
+IaC/cluster/yamls/s3-nohealth.yaml
+IaC/cluster/yamls/s3.yaml
+IaC/cluster/yamls/s4-nohealth.yaml
+IaC/cluster/yamls/s4.yaml
+IaC/cluster/yamls/s5-nohealth.yaml
+IaC/cluster/yamls/s5.yaml
+IaC/logs/az-start.log
+code/db/app.py
