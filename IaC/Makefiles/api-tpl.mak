@@ -70,78 +70,12 @@ s5logs:
 #IGW=a344add95f74b453684bcd29d1461240-517644147.us-east-1.elb.amazonaws.com:80
 IGW=EXTERN
 
-# stock body & fragment for API requests
-BODY_USER= { \
-"user_name": "Sherlock", \
-"user_email": "sholmes@baker.org", \
-"user_phone": "6076076071"\
-}
-
-BODY_RESTAURANT= { \
-"restaurant_name": "Tandoori Flames", \
-"food_name": "Pav Bhaji",\
-"food_price" : "40"
-}
-
-
-BODY_ORDER= {\
-"user_id":"123", \
-"restaurant_id":"456", \
-"food_name":"pizza"\
-}
-
-
-BODY_PAYMENT= {\
-"user_id":"123", \
-"restaurant_id":"456", \
-"food_name":"pizza"\
-}
-
-
-
-BODY_UID= { \
-"user_id":"ecd5ff4d-7635-459b-b56c-96b50b17b7d3" \
-}
-
-BODY_RID= { \
-"restaurant_id":"d7f4f676-2155-47a7-9200-c12cfbf8c67a" \
-}
-
-
-BODY_OID= { \
-"order_id":"d7f4f676-2155-47a7-9200-c12cfbf8c67a" \
-}
-
-
-
-BODY_BILLS={\
-	"payment_method": "Card",\
-	"discount_applied":"10",\
-	"payment_amount":"100000",\
-	"food_name":"pizza", \
-	"user_id":"ee02ff57-4847-4927-a8c8-968f5075b75e","order_id":"DEF456",\
-	"restaurant_id":"XYZ789"\
-	}
-
-
-
-BODY_PID= { \
-"payment_id":"d7f4f676-2155-47a7-9200-c12cfbf8c67a" \
-}
-
-# this is a token for user
-TOKEN=Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls
-
-BODY_TOKEN={ \
-    "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls" \
-}
 
 # keep these ones around
 USER_ID=0d2a2931-8be6-48fc-aa9e-5a0f9f536bd3
 
 # it's convenient to have a second set of id to test deletion (DELETE uses these id with the suffix of 2)
 USER_ID2=9175a76f-7c4d-4a3e-be57-65856c6bb77e
-
 
 # keep these ones around
 RESTAURANT_ID=0d2a2931-8be6-48fc-aa9e-5a0f9f536bd3
@@ -155,12 +89,88 @@ ORDER_ID=0d2a2931-8be6-48fc-aa9e-5a0f9f536bd3
 # it's convenient to have a second set of id to test deletion (DELETE uses these id with the suffix of 2)
 ORDER_ID2=9175a76f-7c4d-4a3e-be57-65856c6bb77e
 
-
 # keep these ones around
 PAYMENT_ID=0d2a2931-8be6-48fc-aa9e-5a0f9f536bd3
 
 # it's convenient to have a second set of id to test deletion (DELETE uses these id with the suffix of 2)
 PAYMENT_ID2=9175a76f-7c4d-4a3e-be57-65856c6bb77e
+
+# keep these ones around
+DELIVERY_ID=0d2a2931-8be6-48fc-aa9e-5a0f9f536bd3
+
+# it's convenient to have a second set of id to test deletion (DELETE uses these id with the suffix of 2)
+DELIVERY_ID2=9175a76f-7c4d-4a3e-be57-65856c6bb77e
+
+
+FOOD_NAME=pizza
+
+# stock body & fragment for API requests
+BODY_USER= { \
+"user_name": "Sherlock", \
+"user_email": "sholmes@baker.org", \
+"user_phone": "6076076071"\
+}
+
+BODY_RESTAURANT= { \
+"restaurant_name": "Tandoori Flames", \
+"food_name": "$(FOOD_NAME)",\
+"food_price" : "40"
+}
+
+
+BODY_ORDER= {\
+"user_id":"$(USER_ID)", \
+"restaurant_id":"$(RESTAURANT_ID)", \
+"food_name": "$(FOOD_NAME)"\
+}
+
+
+BODY_PAYMENT= {\
+"user_id":"$(USER_ID)", \
+"restaurant_id":"$(RESTAURANT_ID)", \
+"food_name": "$(FOOD_NAME)"\
+}
+
+BODY_UID= { \
+"user_id":$(USER_ID) \
+}
+
+BODY_RID= { \
+"restaurant_id":"$(RESTAURANT_ID)" \
+}
+
+BODY_OID= { \
+"order_id":"$(ORDER_ID)" \
+}
+
+BODY_BILLS={\
+	"payment_method": "Card",\
+	"discount_applied":"10",\
+	"payment_amount":"100",\
+	"food_name": "$(FOOD_NAME)", \
+	"user_id":"$(USER_ID)",\
+	"order_id":"$(ORDER_ID)",\
+	"restaurant_id":"$(RESTAURANT_ID)"\
+	}
+
+BODY_DELIVERY={ \
+"order_id":"$(ORDER_ID)", \
+"driver_name":"John",\
+"predicted_delivery_time":"25"\
+}
+
+
+BODY_PID= { \
+"payment_id":"$(PAYMENT_ID)" \
+}
+
+# this is a token for user
+TOKEN=Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls
+
+BODY_TOKEN={ \
+    "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls" \
+}
+
 
 
 #**************************************************** Service  s1 User****************************************************
@@ -228,8 +238,8 @@ ruser:
 
 # POST is used for order (apipost) to create a new record
 corder:
-	echo curl --location --request POST 'http://$(IGW)/api/v1/orders' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' > $(LOG_DIR)/corder.out
-	$(CURL) --location --request POST 'http://$(IGW)/api/v1/orders' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' | tee -a $(LOG_DIR)/corder.out
+	echo curl --location --request POST 'http://$(IGW)/api/v1/orders/' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' > $(LOG_DIR)/corder.out
+	$(CURL) --location --request POST 'http://$(IGW)/api/v1/orders/' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' | tee -a $(LOG_DIR)/corder.out
 
 
 # DELETE is used with order to delete a record
@@ -241,7 +251,6 @@ dorder:
 
 #**************************************************** Service  s3  Bills****************************************************
 
-
 # POST is used (apipost) to create a new record
 cbills:
 	echo curl --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' > $(LOG_DIR)/cbils.out
@@ -250,8 +259,28 @@ cbills:
 
 # DELETE is used to delete a record
 dbills:
-	echo curl --location --request DELETE 'http://$(IGW)/api/v1/orders/$(PAYEMENT_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/dbills.out
-	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/orders/$(PAYEMENT_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dbills.out
+	echo curl --location --request DELETE 'http://$(IGW)/api/v1/bills/$(PAYEMENT_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/dbills.out
+	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/bills/$(PAYEMENT_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dbills.out
+
+#**************************************************** Service  s4  Discount****************************************************
+
+# GET is used with payment to read discount
+rdiscount:
+	echo curl --location request GET 'http://$(IGW)/api/v1/discount/show_discount?payment_id=$(PAYMENT_ID)&order_id=$(ORDER_ID)&user_id=$(USER_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rdiscount.out
+	$(CURL) --location request GET 'http://$(IGW)/api/v1/discount/show_discount?payment_id=$(PAYMENT_ID)&order_id=$(ORDER_ID)&user_id=$(USER_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rdiscount.out
+
+#**************************************************** Service  s5  Delivery****************************************************
+
+# POST is used (apipost) to create a new record
+cdelivery:
+	echo curl --location --request POST 'http://$(IGW)/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '$(BODY_DELIVERY)' > $(LOG_DIR)/cdelivery.out
+	$(CURL) --location --request POST 'http://$(IGW)/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '$(BODY_DELIVERY)' | tee -a $(LOG_DIR)/cdelivery.out
+
+
+# DELETE is used to delete a record
+ddelivery:
+	echo curl --location --request DELETE 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/ddelivery.out
+	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/ddelivery.out
 
 
 showcontext:
