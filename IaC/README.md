@@ -10,8 +10,8 @@ Directory for holding Infrastructure-as-Code assets such as CloudFormation stack
 ### SERVICE  s1
 #### 1. Create user:
 ```sh
-echo curl --location --request POST 'http://$(IGW)/api/v1/user/' --header 'Content-Type: application/json' --data-raw '$(BODY_USER)' > $(LOG_DIR)/cuser.out
-$(CURL) --location --request POST 'http://$(IGW)/api/v1/user/' --header 'Content-Type: application/json' --data-raw '$(BODY_USER)' | tee -a $(LOG_DIR)/cuser.out
+echo curl --location --request POST 'http://$(IGW)/api/v1/populate/user' --header 'Content-Type: application/json' --data-raw '$(BODY_USER)' > $(LOG_DIR)/cuser.out
+$(CURL) --location --request POST 'http://$(IGW)/api/v1/populate/user' --header 'Content-Type: application/json' --data-raw '$(BODY_USER)' | tee -a $(LOG_DIR)/cuser.out
 ```
 Example.
 ```sh
@@ -22,6 +22,8 @@ output:
 
 #### 2. Login:
 ```sh
+echo curl --location --request PUT 'http://$(IGW)/api/v1/populate/login' --header 'Content-Type: application/json' --data-raw '$(BODY_UID)' > $(LOG_DIR)/apilogin.out
+$(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/login' --header 'Content-Type: application/json' --data-raw '$(BODY_UID)' > $(LOG_DIR)/apilogin.out | tee -a $(LOG_DIR)/apilogin.out
 
 ```
 Example.
@@ -33,7 +35,8 @@ output:
 
 #### 3. Logoff:
 ```sh
-
+echo curl --location --request PUT 'http://$(IGW)/api/v1/populate/logoff' --header 'Content-Type: application/json' --data-raw '$(BODY_TOKEN)' > $(LOG_DIR)/apilogoff.out
+$(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/logoff' --header 'Content-Type: application/json' --data-raw '$(BODY_TOKEN)' | tee -a $(LOG_DIR)/apilogoff.out
 ```
 Example.
 ```sh
@@ -44,7 +47,8 @@ output:
 
 #### 4. Update User:
 ```sh
-
+echo curl --location --request PUT 'http://$(IGW)/api/v1/populate/user/$(USER_ID)' --header '$(TOKEN)' --header 'Content-Type: application/json' --data-raw '$(BODY_USER)' > $(LOG_DIR)/uuser.out
+$(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/user/$(USER_ID)' --header '$(TOKEN)' --header 'Content-Type: application/json' --data-raw '$(BODY_USER)' | tee -a $(LOG_DIR)/uuser.out
 ```
 Example.
 ```sh
@@ -55,6 +59,8 @@ output:
 
 #### 5. Delete User:
 ```sh
+echo curl --location --request DELETE 'http://$(IGW)/api/v1/populate/user/$(USER_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/duser.out
+$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/populate/user/$(USER_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/duser.out
 
 ```
 Example.
@@ -67,7 +73,8 @@ output:
 
 #### 6. Get user:
 ```sh
-
+echo curl --location --request GET 'http://$(IGW)/api/v1/populate/user/$(USER_ID)' --header '$(TOKEN)' > $(LOG_DIR)/ruser.out
+$(CURL) --location --request GET 'http://$(IGW)/api/v1/populate/user/$(USER_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/ruser.out
 ```
 Example:
 ```sh
@@ -78,6 +85,8 @@ output:
 
 #### 7. Create Restaurant
 ```sh
+echo curl --location --request POST 'http://$(IGW)/api/v1/populate/restaurant' --header 'Content-Type: application/json' --data-raw '$(BODY_RESTAURANT)' > $(LOG_DIR)/crest.out
+$(CURL) --location --request POST 'http://$(IGW)/api/v1/populate/restaurant' --header 'Content-Type: application/json' --data-raw '$(BODY_RESTAURANT)' | tee -a $(LOG_DIR)/crest.out
 ```
 Example:
 ```sh
@@ -88,6 +97,8 @@ Output:
 
 #### 8. Update Restaurant
 ```sh
+echo curl --location --request PUT 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' --header 'Content-Type: application/json' --data-raw '$(BODY_RESTAURANT)' > $(LOG_DIR)/urest.out
+$(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' --header 'Content-Type: application/json' --data-raw '$(BODY_RESTAURANT)' | tee -a $(LOG_DIR)/urest.out
 ```
 Example:
 ```sh
@@ -98,6 +109,8 @@ Output:
 
 #### 9. Delete Restaurant
 ```sh
+echo curl --location --request DELETE 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/drest.out
+$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/drest.out
 ```
 Example:
 ```sh
@@ -108,6 +121,8 @@ Output:
 
 #### 10. Get Restaurant
 ```sh
+echo curl --location --request GET 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rrest.out
+$(CURL) --location --request GET 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rrest.out
 ```
 Example:
 ```
@@ -119,6 +134,8 @@ Output:
 ### SERVICE s2
 #### 1. Create Order:
 ```sh
+echo curl --location --request POST 'http://$(IGW)/api/v1/orders' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' > $(LOG_DIR)/corder.out
+$(CURL) --location --request POST 'http://$(IGW)/api/v1/orders' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' | tee -a $(LOG_DIR)/corder.out
 ```
 Example:
 ```
@@ -129,6 +146,8 @@ Output:
 
 #### 2. Delete Order:
 ```sh
+echo curl --location --request DELETE 'http://$(IGW)/api/v1/orders/$(ORDER_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/dorder.out
+$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/orders/$(ORDER_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dorder.out
 ```
 Example:
 ```
@@ -141,6 +160,9 @@ Output:
 
 #### 1. Create Bills:
 ```sh
+echo curl --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' > $(LOG_DIR)/cbils.out
+$(CURL) --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' | tee -a $(LOG_DIR)/cbills.out
+
 ```
 Example:
 ```
@@ -151,6 +173,9 @@ Output:
 
 #### 2. Delete Bills:
 ```sh
+echo curl --location --request DELETE 'http://$(IGW)/api/v1/orders/$(PAYEMENT_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/dbills.out
+$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/orders/$(PAYEMENT_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dbills.out
+
 ```
 Example:
 ```
