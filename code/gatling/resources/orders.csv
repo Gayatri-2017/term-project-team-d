@@ -1,0 +1,6 @@
+food_name,user_id,restaurant_id,UUID
+Burger,101,999,e65e75ee-6a25-4c38-9a03-14dea9863ee3
+Pancake,102,998,26084dff-cbec-4e3f-b331-928adf35deae
+Bubble Tea,103,997,cb00af91-152a-4bbe-beea-5318c32fc845
+Rice,104,996,e910ef27-ddf8-4d43-a815-5952c10f58ac
+Taco,105,995,5c571b60-706b-42cd-b57b-03437be80c3a
