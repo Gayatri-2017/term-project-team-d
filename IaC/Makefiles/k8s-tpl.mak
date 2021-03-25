@@ -223,7 +223,7 @@ registry-login:
 # --- Variables defined for URL targets
 # Utility to get the hostname (AWS) or ip (everyone else) of a load-balanced service
 # Must be followed by a service
-IP_GET_CMD=tools/getip.sh $(KC) $(ISTIO_NS)
+IP_GET_CMD=../../scripts/getip.sh $(KC) $(ISTIO_NS)
 
 # This expression is reused several times
 # Use back-tick for subshell so as not to confuse with make $() variable notation
