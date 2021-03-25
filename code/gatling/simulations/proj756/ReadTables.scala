@@ -32,7 +32,7 @@ object Utility {
 
 
 object RUser {
-  val feeder = csv("user.csv").eager.random
+  val feeder = csv("user.csv").eager.circular
   val ruser = forever("i") {
     feed(feeder)
     .exec(http("RUser ${i}")
@@ -43,7 +43,7 @@ object RUser {
 
 
 object RRestaurant {
-  val feeder = csv("restaurant.csv").eager.random
+  val feeder = csv("restaurant.csv").eager.circular
   val rrestaurant = forever("i") {
     feed(feeder)
     .exec(http("RRestaurant ${i}")
@@ -54,7 +54,7 @@ object RRestaurant {
 
 
 object ROrders {
-  val feeder = csv("orders.csv").eager.random
+  val feeder = csv("orders.csv").eager.circular
   val rorders = forever("i") {
     feed(feeder)
     .exec(http("ROrders ${i}")
@@ -65,7 +65,7 @@ object ROrders {
 
 
 object RBills {
-  val feeder = csv("bills.csv").eager.random
+  val feeder = csv("bills.csv").eager.circular
   val rbills = forever("i") {
     feed(feeder)
     .exec(http("RBills ${i}")
@@ -76,18 +76,18 @@ object RBills {
 
 
 object RDiscount {
-  val feeder = csv("discount.csv").eager.random
+  val feeder = csv("discount.csv").eager.circular
   val rdiscount = forever("i") {
     feed(feeder)
     .exec(http("RDiscount ${i}")
-      .get("/api/v1/discount/${UUID}"))
+      .get("/api/v1/discount?payment_id=${payment_id}&order_id=${order_id}&user_id=${user_id}"))
       .pause(1)
   }
 }
 
 
 object RDelivery {
-  val feeder = csv("delivery.csv").eager.random
+  val feeder = csv("delivery.csv").eager.circular
   val rdelivery = forever("i") {
     feed(feeder)
     .exec(http("RDelivery ${i}")

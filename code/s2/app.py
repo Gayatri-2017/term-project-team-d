@@ -64,7 +64,6 @@ def readiness():
 #Retrieve order details based on order id
 @bp.route('/<order_id>', methods=['GET'])
 def get_order(order_id):    
-    
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
