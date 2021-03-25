@@ -59,8 +59,9 @@ def health():
 def readiness():
     return Response("", status=200, mimetype="application/json")
 
-bp.route('/<payment_id>', methods=['GET'])
-def get_discount(user_id):
+@bp.route('/show_discount', methods=['GET'])
+def get_discount():
+
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -69,13 +70,9 @@ def get_discount(user_id):
             status=401,
             mimetype='application/json')
 
-    try:
-        content = requests.get_json()
-        payment_id = content["payment_id"]
-        order_id = content["order_id"]
-        user_id = content["payment_id"]
-    except Exception:
-        return json.dumps({"message": "error reading arguments"})
+    payment_id = request.args.get('payment_id', None)
+    order_id = request.args.get('order_id', None)
+    user_id = request.args.get('user_id', None)
 
     payload = {"objtype": "payment",
                 "objkey": payment_id}
@@ -83,9 +80,12 @@ def get_discount(user_id):
     url = db['name'] + '/' + db['endpoint'][0]
     response = requests.get(url, params=payload)
 
-    dis_json = {"discount_applied": response['discount_applied']}
+    discount_json = response.json()
+    discount_given = discount_json["Items"][0]["discount_applied"]
 
-    return (dis_json)
+    return (discount_given)
+
+
 
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is

@@ -1,0 +1,4 @@
+payment_method,discount_applied,payment_amount,food_name,user_id,order_id,restaurant_id,UUID
+cash,10,34,Rice,101,999,501,d051a262-beab-4f11-bae9-21e13e2868b5
+card,5,20,Tofu,102,998,502,2070db6d-bce0-48d0-af41-02386d6f5299
+cash,15,50,pizza,103,997,501,b6aa4eac-dd35-4234-b58f-61d55a8c328e

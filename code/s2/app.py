@@ -62,10 +62,8 @@ def readiness():
     
 
 #Retrieve order details based on order id
-    
 @bp.route('/<order_id>', methods=['GET'])
 def get_order(order_id):    
-    
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -93,7 +91,7 @@ def create_order():
     
     try:
         content = request.get_json()
-        customer_id = content['customer_id']        
+        user_id = content['user_id']        
         restaurant_id = content['restaurant_id']
         food_name = content['food_name']
 
@@ -104,7 +102,7 @@ def create_order():
     response = requests.post(
         url,
         json={"objtype": "order",                          
-              "customer_id":customer_id,        
+              "user_id":user_id,        
               "restaurant_id":restaurant_id,
               "food_name":food_name})   
     return (response.json())

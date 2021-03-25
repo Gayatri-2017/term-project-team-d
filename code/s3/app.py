@@ -60,6 +60,22 @@ def health():
 def readiness():
     return Response("", status=200, mimetype="application/json")
 
+#Retrieve payment details based on order id
+@bp.route('/<payment_id>', methods=['GET'])
+def get_payment(payment_id):
+
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(
+            json.dumps({"error": "missing auth"}),
+            status=401,
+            mimetype='application/json')
+    payload = {"objtype": "order", "objkey": payment_id}
+    url = db['name'] + '/' + db['endpoint'][0]
+    response = requests.get(url, params=payload)
+    return (response.json())
+
 
 @bp.route('/', methods=['POST'])
 def create_biils():
@@ -80,7 +96,7 @@ def create_biils():
         discount_applied = content['discount_applied']
         payment_amount = content['payment_amount']
         food_name = content['food_name']
-        customer_id = content['customer_id']
+        user_id = content['user_id']
         order_id = content['order_id']
         restaurant_id = content['restaurant_id']
 
@@ -95,7 +111,7 @@ def create_biils():
             "discount_applied": discount_applied,
             "payment_amount":payment_amount,
             "food_name":food_name,
-            "customer_id":customer_id,
+            "user_id":user_id,
             "order_id":order_id,
             "restaurant_id":restaurant_id
             })
