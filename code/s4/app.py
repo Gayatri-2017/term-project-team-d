@@ -81,7 +81,10 @@ def get_discount():
     response = requests.get(url, params=payload)
 
     discount_json = response.json()
-    discount_given = discount_json["Items"][0]["discount_applied"]
+    if len(discount_json["Items"]) == 0:
+        discount_given = "0"
+    else:
+        discount_given = discount_json["Items"][0]["discount_applied"]
 
     return (discount_given)
 

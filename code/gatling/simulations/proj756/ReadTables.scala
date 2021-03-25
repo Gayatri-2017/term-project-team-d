@@ -80,7 +80,7 @@ object RDiscount {
   val rdiscount = forever("i") {
     feed(feeder)
     .exec(http("RDiscount ${i}")
-      .get("/api/v1/discount?payment_id=${payment_id}&order_id=${order_id}&user_id=${user_id}"))
+      .get("/api/v1/discount/show_discount?payment_id=${payment_id}&order_id=${order_id}&user_id=${user_id}"))
       .pause(1)
   }
 }

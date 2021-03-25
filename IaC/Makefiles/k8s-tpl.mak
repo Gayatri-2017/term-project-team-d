@@ -84,7 +84,7 @@ templates:
 # 2. Current context is a running Kubernetes cluster (make -f {az,eks,gcp,mk}.mak start)
 #
 #provision: istio prom kiali deploy
-provision: istio deploy
+provision: istio prom deploy
 
 # --- deploy: Deploy and monitor the three microservices
 # Use `provision` to deploy the entire stack (including Istio, Prometheus, ...).
