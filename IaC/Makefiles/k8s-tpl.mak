@@ -84,7 +84,7 @@ templates:
 # 2. Current context is a running Kubernetes cluster (make -f {az,eks,gcp,mk}.mak start)
 #
 #provision: istio prom kiali deploy
-provision: istio deploy
+provision: istio prom deploy
 
 # --- deploy: Deploy and monitor the three microservices
 # Use `provision` to deploy the entire stack (including Istio, Prometheus, ...).
@@ -223,7 +223,7 @@ registry-login:
 # --- Variables defined for URL targets
 # Utility to get the hostname (AWS) or ip (everyone else) of a load-balanced service
 # Must be followed by a service
-IP_GET_CMD=tools/getip.sh $(KC) $(ISTIO_NS)
+IP_GET_CMD=../../scripts/getip.sh $(KC) $(ISTIO_NS)
 
 # This expression is reused several times
 # Use back-tick for subshell so as not to confuse with make $() variable notation
