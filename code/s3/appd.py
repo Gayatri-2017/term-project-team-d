@@ -61,6 +61,23 @@ def readiness():
     return Response("", status=200, mimetype="application/json")
 
 
+#Retrieve payment details based on order id
+@bp.route('/<payment_id>', methods=['GET'])
+def get_payment(payment_id):
+
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(
+            json.dumps({"error": "missing auth"}),
+            status=401,
+            mimetype='application/json')
+    payload = {"objtype": "order", "objkey": payment_id}
+    url = db['name'] + '/' + db['endpoint'][0]
+    response = requests.get(url, params=payload)
+    return (response.json())
+
+
 @bp.route('/', methods=['POST'])
 def create_bills():
 
