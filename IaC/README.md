@@ -2,10 +2,6 @@
 Directory for holding Infrastructure-as-Code assets such as CloudFormation stacks, Kubernetes manifests, makefiles etc.
 
 
-# tprj/IaC
-Directory for holding Infrastructure-as-Code assets such as CloudFormation stacks, Kubernetes manifests, makefiles etc.
-
-
 ### Instructions to Execute Operations using CURL Command
 ### SERVICE  s1
 #### 1. Create user:
@@ -131,6 +127,7 @@ $ curl --location --request GET 'http://52.139.15.115/api/v1/populate/restaurant
 Output:
 `{"Count":1,"Items":[{"food_name":"Pav Bhaji","food_price":"40","restaurant_id":"a38962b2-59bb-4723-a15e-d99fb7bfcaad","restaurant_name":"Tandoori Flames"}],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"197","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:27:23 GMT","server":"Server","x-amz-crc32":"3248517746","x-amzn-requestid":"FK6UQ6F842CQJB0119AE5DBSKFVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"FK6UQ6F842CQJB0119AE5DBSKFVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":1}`
 
+
 ### SERVICE s2
 #### 1. Create Order:
 ```sh
@@ -155,6 +152,18 @@ $ curl --location --request DELETE 'http://52.139.15.115/api/v1/orders/49981eab-
 ```
 Output:
 `{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:41:26 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"S476BLH4GOS5T53UV5FR7N1DR7VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"S476BLH4GOS5T53UV5FR7N1DR7VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+
+#### 3. Get Order
+```
+echo curl --location --request GET 'http://$(IGW)/api/v1/orders/$(ORDER_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rorder.out
+$(CURL) --location --request GET 'http://$(IGW)/api/v1/orders/$(ORDER_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rorder.out
+```
+Example:
+```
+curl --location --request GET 'http://52.228.103.155/api/v1/orders/c8f3b75d-3aae-40af-bd51-1880c348e348' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls'
+```
+output: 
+`{"Count":1,"Items":[{"food_name":"pizza","order_id":"c8f3b75d-3aae-40af-bd51-1880c348e348","restaurant_id":"ed680ecc-bb43-4580-b0e4-e4f341fae321","user_id":"c6300071-ac6a-49e0-8d61-d425169525fe"}],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"238","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 07:16:59 GMT","server":"Server","x-amz-crc32":"1750718965","x-amzn-requestid":"D3TTFT5DDH8F5MBVQGKSQEL1D3VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"D3TTFT5DDH8F5MBVQGKSQEL1D3VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":1}`
 
 #### SERVICE s3
 
@@ -184,19 +193,35 @@ curl --location --request DELETE "http://52.139.15.115/api/v1/bills/4775b1f9-88b
 Output:
 `{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 23:59:14 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"56PBVA6ROEKFOH2PUR42I3LGS3VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"56PBVA6ROEKFOH2PUR42I3LGS3VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
 
-### SERVICE s4
-#### 1. Get Discount
-```sh
+#### 3. Get Bills
+```
+echo curl --location --request GET 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rbills.out
+$(CURL) --location --request GET 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rbills.out
 ```
 Example:
 ```
-
+curl --location --request GET 'http://52.228.103.155/api/v1/bills/b65bc029-a624-4fe1-9a15-4f906dd47746' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls'
 ```
-output:
+Output:
+`{"Count":0,"Items":[],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"39","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 07:34:55 GMT","server":"Server","x-amz-crc32":"3413411624","x-amzn-requestid":"2JUJPP3V3CRH8QNGKN9BKT7I83VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"2JUJPP3V3CRH8QNGKN9BKT7I83VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":0}`
+
+### SERVICE s4
+#### 1. Get Discount
+```sh
+echo curl --location request GET 'http://$(IGW)/api/v1/discount/show_discount?payment_id=$(PAYMENT_ID)&order_id=$(ORDER_ID)&user_id=$(USER_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rdiscount.out
+$(CURL) --location request GET 'http://$(IGW)/api/v1/discount/show_discount?payment_id=$(PAYMENT_ID)&order_id=$(ORDER_ID)&user_id=$(USER_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rdiscount.out
+```
+Example:
+```
+curl --location request GET 'http://52.139.15.115/api/v1/discount/show_discount?payment_id=2ec09472-2143-41b6-870f-12ba7e27e7b3&order_id=456&user_id=627' --header "Authorization: Bearer token123"
+```
+output:`10`
 `   `
 ### SERVICE s5
 #### 1. Create Delivery:
 ```sh
+echo curl --location --request POST 'http://$(IGW)/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '$(BODY_DELIVERY)' > $(LOG_DIR)/cdelivery.out
+$(CURL) --location --request POST 'http://$(IGW)/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '$(BODY_DELIVERY)' | tee -a $(LOG_DIR)/cdelivery.out
 ```
 Example:
 ```
@@ -208,6 +233,8 @@ output:
 
 #### 2. Delete Delivery:
 ```sh
+echo curl --location --request DELETE 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/ddelivery.out
+$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/ddelivery.out
 ```
 Example:
 ```
@@ -216,7 +243,19 @@ curl --location --request DELETE 'http://52.139.15.115/api/v1/delivery/0b43d2d3-
 Output:
 `{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Mon, 22 Mar 2021 01:06:07 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"KM7UE7PTVEPFVHCEVA114S2JJJVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"KM7UE7PTVEPFVHCEVA114S2JJJVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
 
-
+#### 3. Get Delivery:
+```sh
+echo curl --location --request GET 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rdelivery.out
+$(CURL) --location --request GET 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rdelivery.out
+```
+Example:
+```
+curl --location --request GET 'http://52.228.103.155/api/v1/delivery/bb100d25-bc1b-4aca-ad28-20bb099e6d0c' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls'
+```
+Output:
+`
+{"Count":0,"Items":[],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"39","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 07:36:14 GMT","server":"Server","x-amz-crc32":"3413411624","x-amzn-requestid":"PMIF9NB11NQIIRCMNKQJ2UNFC7VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"PMIF9NB11NQIIRCMNKQJ2UNFC7VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":0}
+`
 
 
 
