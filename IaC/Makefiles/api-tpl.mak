@@ -14,6 +14,7 @@
 
 KC=kubectl
 CURL=curl
+NS=c756ns
 
 # Keep all the logs out of main directory
 LOG_DIR=../logs
@@ -69,6 +70,7 @@ s5logs:
 #IGW=10.96.57.211:80
 #IGW=a344add95f74b453684bcd29d1461240-517644147.us-east-1.elb.amazonaws.com:80
 IGW=EXTERN
+IGW=52.139.23.80
 
 
 # keep these ones around
@@ -114,7 +116,7 @@ BODY_USER= { \
 BODY_RESTAURANT= { \
 "restaurant_name": "Tandoori Flames", \
 "food_name": "$(FOOD_NAME)",\
-"food_price" : "40"
+"food_price" : "40" \
 }
 
 
@@ -132,7 +134,7 @@ BODY_PAYMENT= {\
 }
 
 BODY_UID= { \
-"user_id":$(USER_ID) \
+"user_id":"$(USER_ID)" \
 }
 
 BODY_RID= { \
@@ -227,7 +229,7 @@ drest:
 	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/drest.out
 
 # GET is used with restaurant to read a record
-ruser:
+rrest:
 	echo curl --location --request GET 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rrest.out
 	$(CURL) --location --request GET 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rrest.out
 
@@ -238,9 +240,8 @@ ruser:
 
 # POST is used for order (apipost) to create a new record
 corder:
-	echo curl --location --request POST 'http://$(IGW)/api/v1/orders/' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' > $(LOG_DIR)/corder.out
-	$(CURL) --location --request POST 'http://$(IGW)/api/v1/orders/' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' | tee -a $(LOG_DIR)/corder.out
-
+	echo curl --location --request POST 'http://$(IGW)/api/v1/orders/' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' --header '$(TOKEN)' > $(LOG_DIR)/corder.out
+	$(CURL) --location --request POST 'http://$(IGW)/api/v1/orders/' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/corder.out
 
 # DELETE is used with order to delete a record
 dorder:
@@ -253,14 +254,14 @@ dorder:
 
 # POST is used (apipost) to create a new record
 cbills:
-	echo curl --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' > $(LOG_DIR)/cbils.out
-	$(CURL) --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' | tee -a $(LOG_DIR)/cbills.out
+	echo curl --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' --header '$(TOKEN)' > $(LOG_DIR)/cbils.out
+	$(CURL) --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/cbills.out
 
 
 # DELETE is used to delete a record
 dbills:
-	echo curl --location --request DELETE 'http://$(IGW)/api/v1/bills/$(PAYEMENT_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/dbills.out
-	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/bills/$(PAYEMENT_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dbills.out
+	echo curl --location --request DELETE 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/dbills.out
+	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dbills.out
 
 #**************************************************** Service  s4  Discount****************************************************
 
