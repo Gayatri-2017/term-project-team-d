@@ -1,7 +1,5 @@
 # tprj/IaC
 Directory for holding Infrastructure-as-Code assets such as CloudFormation stacks, Kubernetes manifests, makefiles etc.
-
-
 ### Instructions to Execute Operations using CURL Command
 ### SERVICE  s1
 #### 1. Create user:
@@ -11,10 +9,10 @@ $(CURL) --location --request POST 'http://$(IGW)/api/v1/populate/user' --header 
 ```
 Example.
 ```sh
-$ curl --location --request POST 'http://52.139.15.115/api/v1/populate/user' --header 'Content-Type: application/json' --data-raw '{"user_name": "abhishek", "user_email": "abc@sfu.ca", "user_phone": "6047218764"}'
+curl --location --request POST 'http://52.139.21.27/api/v1/populate/user' --header 'Content-Type: application/json' --data-raw '{ "user_name": "Sherlock", "user_email": "sholmes@baker.org", "user_phone": "6076076071" }' 
 ```
 output:
-`Output:{"user_id":"ee02ff57-4847-4927-a8c8-968f5075b75e"}`
+`{"user_id":"d555a8cc-8e2d-4579-a15e-0edc986b7690"}`
 
 #### 2. Login:
 ```sh
@@ -24,10 +22,11 @@ $(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/login' --header 
 ```
 Example.
 ```sh
-$ curl --location --request PUT 'http://52.139.15.115/api/v1/populate/login' --header 'Content-Type: application/json' --data-raw '{"user_id":"ecd5ff4d-7635-459b-b56c-96b50b17b7d3"}'
+curl --location --request PUT 'http://52.139.21.27/api/v1/populate/login' --header 'Content-Type: application/json' --data-raw '{ "user_id":"d555a8cc-8e2d-4579-a15e-0edc986b7690" }'
 ```
 output: 
-`OeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWNkNWZmNGQtNzYzNS00NTliLWI1NmMtOTZiNTBiMTdiN2QzIiwidGltZSI6MTYxNjM2MzUyNC4xMzg0OTE2fQ.CJZgRuqj9A_TgOo4OTv0cQt9P1mnEMKMjRxOGITi7js`
+`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw`
+`
 
 #### 3. Logoff:
 ```sh
@@ -36,7 +35,7 @@ $(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/logoff' --header
 ```
 Example.
 ```sh
-curl --location --request PUT 'http://52.139.15.115/api/v1/populate/logoff' --header 'Content-Type: application/json' --data-raw '{"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWNkNWZmNGQtNzYzNS00NTliLWI1NmMtOTZiNTBiMTdiN2QzIiwidGltZSI6MTYxNjM2MzUyNC4xMzg0OTE2fQ.CJZgRuqj9A_TgOo4OTv0cQt9P1mnEMKMjRxOGITi7js"}'
+curl --location --request PUT 'http://52.139.21.27/api/v1/populate/logoff' --header 'Content-Type: application/json' --data-raw '{ "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw" }'
 ```
 output:
 `{}`
@@ -48,10 +47,11 @@ $(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/user/$(USER_ID)'
 ```
 Example.
 ```sh
-curl --location --request PUT 'http://52.139.15.115/api/v1/populate/user/ee02ff57-4847-4927-a8c8-968f5075b75e' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNmI3NGU1MTYtMjEyOS00YWI4LWJiZWMtYTg0YzI4MDg4Nzc0IiwidGltZSI6MTYxNjMxNTQ4OC43NjcxNDkyfQ.xzCoEcgkuLj483PTqPf1aVDFTD150VlvYBzDycMQuEw' --header 'Content-Type: application/json' --data-raw '{"user_name": "abhi1223", "user_email": "abc1111@sfu.ca", "user_phone": "112233555"}'
+curl --location --request PUT 'http://52.139.21.27/api/v1/populate/user/d555a8cc-8e2d-4579-a15e-0edc986b7690' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw' --header 'Content-Type: application/json' --data-raw '{ "user_name": "Sherlock Holmes", "user_email": "sholmes@baker.org", "user_phone": "6076076071" }'
 ```
 output:
-`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:04:13 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"OL8S5OPE05INVEQL3NJ32BK6EVVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"OL8S5OPE05INVEQL3NJ32BK6EVVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+`{{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:38:22 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"9AC25E34CB713VRE3K5F2IG3OJVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"9AC25E34CB713VRE3K5F2IG3OJVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+
 
 #### 5. Delete User:
 ```sh
@@ -61,10 +61,10 @@ $(CURL) --location --request DELETE 'http://$(IGW)/api/v1/populate/user/$(USER_I
 ```
 Example.
 ```sh
-$ curl --location --request DELETE 'http://52.139.15.115/api/v1/populate/user/ecd5ff4d-7635-459b-b56c-96b50b17b7d3' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNmI3NGU1MTYtMjEyOS00YWI4LWJiZWMtYTg0YzI4MDg4Nzc0IiwidGltZSI6MTYxNjMxNTQ4OC43NjcxNDkyfQ.xzCoEcgkuLj483PTqPf1aVDFTD150VlvYBzDycMQuEw'
+curl --location --request DELETE 'http://52.139.21.27/api/v1/populate/user/d555a8cc-8e2d-4579-a15e-0edc986b7690' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 output:
-`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:08:01 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"260O4E8OUCLFPCQIVPTRPJTR73VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"260O4E8OUCLFPCQIVPTRPJTR73VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:56:01 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"02O98TEAHR26RQI4QCDLOOEFHNVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"02O98TEAHR26RQI4QCDLOOEFHNVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
 
 
 #### 6. Get user:
@@ -74,10 +74,11 @@ $(CURL) --location --request GET 'http://$(IGW)/api/v1/populate/user/$(USER_ID)'
 ```
 Example:
 ```sh
-curl --location --request GET 'http://52.139.15.115/api/v1/populate/user/ee02ff57-4847-4927-a8c8-968f5075b75e' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1'
+curl --location --request GET 'http://52.139.21.27/api/v1/populate/user/d555a8cc-8e2d-4579-a15e-0edc986b7690' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 output:
-`{"Count":1,"Items":[{"user_email":"abc1111@sfu.ca","user_id":"ee02ff57-4847-4927-a8c8-968f5075b75e","user_name":"abhi1223","user_phone":"112233555"}],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"191","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:31:06 GMT","server":"Server","x-amz-crc32":"4047070539","x-amzn-requestid":"HD89KMH6UMMSM2AFVM9D9G4SHVVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"HD89KMH6UMMSM2AFVM9D9G4SHVVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":1}`
+`{"Count":1,"Items":[{"user_email":"sholmes@baker.org","user_id":"d555a8cc-8e2d-4579-a15e-0edc986b7690","user_name":"Sherlock","user_phone":"6076076071"}],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"195","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:39:25 GMT","server":"Server","x-amz-crc32":"882803775","x-amzn-requestid":"I16DDR7KGB98496RILDB4SEKGJVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"I16DDR7KGB98496RILDB4SEKGJVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":1}`
+
 
 #### 7. Create Restaurant
 ```sh
@@ -86,10 +87,10 @@ $(CURL) --location --request POST 'http://$(IGW)/api/v1/populate/restaurant' --h
 ```
 Example:
 ```sh
-curl --location --request POST 'http://52.139.15.115/api/v1/populate/restaurant' --header 'Content-Type: application/json' --data-raw '{"restaurant_name": "Tandoori Flames", "food_name": "Pav Bhaji", "food_price" : "40"}'
+curl --location --request POST 'http://52.139.21.27/api/v1/populate/restaurant' --header 'Content-Type: application/json' --data-raw '{ "restaurant_name": "Tandoori Flames", "food_name": "pizza", "food_price" : "40" }'
 ```
 Output:
-`{"restaurant_id":"d7f4f676-2155-47a7-9200-c12cfbf8c67a"}`
+`{"restaurant_id":"1a5defcc-78d6-4b8d-aca3-02f263321ff1"}`
 
 #### 8. Update Restaurant
 ```sh
@@ -98,10 +99,10 @@ $(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/restaurant/$(RES
 ```
 Example:
 ```sh
-curl --location --request PUT 'http://52.139.15.115/api/v1/populate/restaurant/dcea700a-b5f1-4321-b148-2d563e63ee82' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWNkNWZmNGQtNzYzN'  --header 'Content-Type: application/json' --data-raw '{"restaurant_name": "Tandoori Flames", "food_name": "Pav Bhaji", "food_price":"35"}'
+curl --location --request PUT 'http://52.139.21.27/api/v1/populate/restaurant/1a5defcc-78d6-4b8d-aca3-02f263321ff1' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw' --header 'Content-Type: application/json' --data-raw '{ "restaurant_name": "Pizza Town", "food_name": "pizza", "food_price" : "40" }'
 ```
 Output:
-`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:12:47 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"5OH93LLUP8TQGA6B0V43KOHBFNVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"5OH93LLUP8TQGA6B0V43KOHBFNVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:42:48 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"6B08L8TUIVC3H5R7NG1C4O2IQ7VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"6B08L8TUIVC3H5R7NG1C4O2IQ7VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
 
 #### 9. Delete Restaurant
 ```sh
@@ -110,10 +111,10 @@ $(CURL) --location --request DELETE 'http://$(IGW)/api/v1/populate/restaurant/$(
 ```
 Example:
 ```sh
-curl --location --request DELETE 'http://52.139.15.115/api/v1/populate/restaurant/dcea700a-b5f1-4321-b148-2d563e63ee82' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1'
+curl --location --request DELETE 'http://52.139.21.27/api/v1/populate/restaurant/1a5defcc-78d6-4b8d-aca3-02f263321ff1' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 Output:
-`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:14:06 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"H5BBAH7VS1R69UIQHT0G7JPAVBVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"H5BBAH7VS1R69UIQHT0G7JPAVBVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:54:42 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"QJNKSDKHMGFAE5QDSREBU0ANOFVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"QJNKSDKHMGFAE5QDSREBU0ANOFVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
 
 #### 10. Get Restaurant
 ```sh
@@ -121,11 +122,11 @@ echo curl --location --request GET 'http://$(IGW)/api/v1/populate/restaurant/$(R
 $(CURL) --location --request GET 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rrest.out
 ```
 Example:
-```
-$ curl --location --request GET 'http://52.139.15.115/api/v1/populate/restaurant/a38962b2-59bb-4723-a15e-d99fb7bfcaad' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1'
+```sh
+curl --location --request GET 'http://52.139.21.27/api/v1/populate/restaurant/1a5defcc-78d6-4b8d-aca3-02f263321ff1' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 Output:
-`{"Count":1,"Items":[{"food_name":"Pav Bhaji","food_price":"40","restaurant_id":"a38962b2-59bb-4723-a15e-d99fb7bfcaad","restaurant_name":"Tandoori Flames"}],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"197","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:27:23 GMT","server":"Server","x-amz-crc32":"3248517746","x-amzn-requestid":"FK6UQ6F842CQJB0119AE5DBSKFVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"FK6UQ6F842CQJB0119AE5DBSKFVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":1}`
+`{"Count":1,"Items":[{"food_name":"pizza","food_price":"40","restaurant_id":"1a5defcc-78d6-4b8d-aca3-02f263321ff1","restaurant_name":"Tandoori Flames"}],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"193","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:42:03 GMT","server":"Server","x-amz-crc32":"3636568432","x-amzn-requestid":"2SDR6QR138F5NT2T816QTQ655BVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"2SDR6QR138F5NT2T816QTQ655BVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":1}`
 
 
 ### SERVICE s2
@@ -135,11 +136,11 @@ echo curl --location --request POST 'http://$(IGW)/api/v1/orders' --header 'Cont
 $(CURL) --location --request POST 'http://$(IGW)/api/v1/orders' --header 'Content-Type: application/json' --data-raw '$(BODY_ORDER)' | tee -a $(LOG_DIR)/corder.out
 ```
 Example:
-```
-curl --location --request POST 'http://52.139.15.115/api/v1/orders/' --header 'Content-Type: application/json' --data-raw '{"user_id":"123", "restaurant_id":"456", "food_name":"pizza"}' --header 'Authorization: Bearer 123mytoken789'
+```sh
+curl --location --request POST 'http://52.139.21.27/api/v1/orders/' --header 'Content-Type: application/json' --data-raw '{ "user_id":"d555a8cc-8e2d-4579-a15e-0edc986b7690", "restaurant_id":"1a5defcc-78d6-4b8d-aca3-02f263321ff1", "food_name": "pizza" }' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 Output:
-`{"order_id":"49981eab-98e7-478a-9ae9-cf12685bacca"}`
+`{"order_id":"a5781b90-6678-40fb-8965-533b665a9f82"}`
 
 #### 2. Delete Order:
 ```sh
@@ -147,11 +148,11 @@ echo curl --location --request DELETE 'http://$(IGW)/api/v1/orders/$(ORDER_ID2)'
 $(CURL) --location --request DELETE 'http://$(IGW)/api/v1/orders/$(ORDER_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dorder.out
 ```
 Example:
-```
-$ curl --location --request DELETE 'http://52.139.15.115/api/v1/orders/49981eab-98e7-478a-9ae9-cf12685bacca' --header 'Authorization: Bearer 123mytoken789'
+```sh
+curl --location --request DELETE 'http://52.139.21.27/api/v1/orders/a5781b90-6678-40fb-8965-533b665a9f82' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw' 
 ```
 Output:
-`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 22:41:26 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"S476BLH4GOS5T53UV5FR7N1DR7VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"S476BLH4GOS5T53UV5FR7N1DR7VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:53:59 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"B495RA3OBG9DCRKBONGRFIJK0FVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"B495RA3OBG9DCRKBONGRFIJK0FVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
 
 #### 3. Get Order
 ```
@@ -159,11 +160,11 @@ echo curl --location --request GET 'http://$(IGW)/api/v1/orders/$(ORDER_ID)' --h
 $(CURL) --location --request GET 'http://$(IGW)/api/v1/orders/$(ORDER_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rorder.out
 ```
 Example:
-```
-curl --location --request GET 'http://52.228.103.155/api/v1/orders/c8f3b75d-3aae-40af-bd51-1880c348e348' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls'
+```sh
+curl --location --request GET 'http://52.139.21.27/api/v1/orders/a5781b90-6678-40fb-8965-533b665a9f82' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 output: 
-`{"Count":1,"Items":[{"food_name":"pizza","order_id":"c8f3b75d-3aae-40af-bd51-1880c348e348","restaurant_id":"ed680ecc-bb43-4580-b0e4-e4f341fae321","user_id":"c6300071-ac6a-49e0-8d61-d425169525fe"}],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"238","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 07:16:59 GMT","server":"Server","x-amz-crc32":"1750718965","x-amzn-requestid":"D3TTFT5DDH8F5MBVQGKSQEL1D3VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"D3TTFT5DDH8F5MBVQGKSQEL1D3VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":1}`
+`{"Count":1,"Items":[{"food_name":"pizza","order_id":"a5781b90-6678-40fb-8965-533b665a9f82","restaurant_id":"1a5defcc-78d6-4b8d-aca3-02f263321ff1","user_id":"d555a8cc-8e2d-4579-a15e-0edc986b7690"}],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"238","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:46:05 GMT","server":"Server","x-amz-crc32":"821038353","x-amzn-requestid":"TR9LKT2FN660QL35B0ENDAUST3VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"TR9LKT2FN660QL35B0ENDAUST3VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":1}`
 
 #### SERVICE s3
 
@@ -174,11 +175,11 @@ $(CURL) --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Conten
 
 ```
 Example:
-```
-curl --location --request POST 'http://52.139.15.115/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '{"payment_method": "Card", "discount_applied":"10", "payment_amount":"100000", "food_name":"pizza", "user_id":"ee02ff57-4847-4927-a8c8-968f5075b75e","order_id":"DEF456","restaurant_id":"XYZ789"}' --header 'Authorization: Bearer 123mytoken'
+```sh
+curl --location --request POST 'http://52.139.21.27/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '{ "payment_method": "Card", "discount_applied":"10", "payment_amount":"100", "food_name": "pizza", "user_id":"d555a8cc-8e2d-4579-a15e-0edc986b7690", "order_id":"a5781b90-6678-40fb-8965-533b665a9f82", "restaurant_id":"1a5defcc-78d6-4b8d-aca3-02f263321ff1" }' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 Output:
-`{"payment_id":"735dc5f3-62dd-478d-b6c8-60d7a8890f85"}`
+`{"payment_id":"e46b40fb-b8a7-4d11-b727-f8425c432e25"}`
 
 #### 2. Delete Bills:
 ```sh
@@ -187,11 +188,11 @@ $(CURL) --location --request DELETE 'http://$(IGW)/api/v1/orders/$(PAYEMENT_ID2)
 
 ```
 Example:
-```
-curl --location --request DELETE "http://52.139.15.115/api/v1/bills/4775b1f9-88bd-4143-96df-9a085c84d1bd" --header "Authorization: Bearer 123mytoken"
+```sh
+curl --location --request DELETE 'http://52.139.21.27/api/v1/bills/e46b40fb-b8a7-4d11-b727-f8425c432e25' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 Output:
-`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Sun, 21 Mar 2021 23:59:14 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"56PBVA6ROEKFOH2PUR42I3LGS3VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"56PBVA6ROEKFOH2PUR42I3LGS3VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:53:17 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"TSRS6SN183P4HK4L5OM2JTHSTJVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"TSRS6SN183P4HK4L5OM2JTHSTJVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
 
 #### 3. Get Bills
 ```
@@ -199,11 +200,11 @@ echo curl --location --request GET 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID)' --
 $(CURL) --location --request GET 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rbills.out
 ```
 Example:
-```
-curl --location --request GET 'http://52.228.103.155/api/v1/bills/b65bc029-a624-4fe1-9a15-4f906dd47746' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls'
+```sh
+curl --location --request GET 'http://52.139.21.27/api/v1/bills/e46b40fb-b8a7-4d11-b727-f8425c432e25' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 Output:
-`{"Count":0,"Items":[],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"39","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 07:34:55 GMT","server":"Server","x-amz-crc32":"3413411624","x-amzn-requestid":"2JUJPP3V3CRH8QNGKN9BKT7I83VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"2JUJPP3V3CRH8QNGKN9BKT7I83VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":0}`
+`{"Count":0,"Items":[],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"39","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:48:35 GMT","server":"Server","x-amz-crc32":"3413411624","x-amzn-requestid":"8TQA1RUPU749QCUJMEMTIPBTSNVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"8TQA1RUPU749QCUJMEMTIPBTSNVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":0}`
 
 ### SERVICE s4
 #### 1. Get Discount
@@ -212,8 +213,8 @@ echo curl --location request GET 'http://$(IGW)/api/v1/discount/show_discount?pa
 $(CURL) --location request GET 'http://$(IGW)/api/v1/discount/show_discount?payment_id=$(PAYMENT_ID)&order_id=$(ORDER_ID)&user_id=$(USER_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rdiscount.out
 ```
 Example:
-```
-curl --location request GET 'http://52.139.15.115/api/v1/discount/show_discount?payment_id=2ec09472-2143-41b6-870f-12ba7e27e7b3&order_id=456&user_id=627' --header "Authorization: Bearer token123"
+```sh
+curl --location request GET 'http://52.139.21.27/api/v1/discount/show_discount?payment_id=e46b40fb-b8a7-4d11-b727-f8425c432e25&order_id=a5781b90-6678-40fb-8965-533b665a9f82&user_id=d555a8cc-8e2d-4579-a15e-0edc986b7690'
 ```
 output:`10`
 `   `
@@ -224,11 +225,11 @@ echo curl --location --request POST 'http://$(IGW)/api/v1/delivery/' --header 'C
 $(CURL) --location --request POST 'http://$(IGW)/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '$(BODY_DELIVERY)' | tee -a $(LOG_DIR)/cdelivery.out
 ```
 Example:
-```
-curl --location --request POST 'http://52.139.15.115/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '{"order_id":"972","driver_name":"John","predicted_delivery_time":"25"}' --header 'Authorization: Bearer 123mytoken789'
+```sh
+curl --location --request POST 'http://52.139.21.27/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '{ "order_id":"a5781b90-6678-40fb-8965-533b665a9f82", "driver_name":"John", "predicted_delivery_time":"25" }'
 ```
 output:
-`{"delivery_id":"1dff32a9-fdd6-4cc8-9994-203764804c63"}`
+`{"delivery_id":"0fed398b-b5be-4e16-a4c9-bebf9dc42422"}`
 
 
 #### 2. Delete Delivery:
@@ -237,11 +238,11 @@ echo curl --location --request DELETE 'http://$(IGW)/api/v1/delivery/$(DELIVERY_
 $(CURL) --location --request DELETE 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/ddelivery.out
 ```
 Example:
-```
-curl --location --request DELETE 'http://52.139.15.115/api/v1/delivery/0b43d2d3-6ae7-4d20-b99c-c66e2ea01fa3' --header 'Authorization: Bearer 123mytoken789'
+```sh
+curl --location --request DELETE 'http://52.139.21.27/api/v1/delivery/0fed398b-b5be-4e16-a4c9-bebf9dc42422' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 Output:
-`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Mon, 22 Mar 2021 01:06:07 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"KM7UE7PTVEPFVHCEVA114S2JJJVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"KM7UE7PTVEPFVHCEVA114S2JJJVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
+`{"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"2","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:51:58 GMT","server":"Server","x-amz-crc32":"2745614147","x-amzn-requestid":"U9KSQ8IQ6DJA4HA9JODPDCJOHVVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"U9KSQ8IQ6DJA4HA9JODPDCJOHVVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0}}`
 
 #### 3. Get Delivery:
 ```sh
@@ -249,13 +250,13 @@ echo curl --location --request GET 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID)
 $(CURL) --location --request GET 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rdelivery.out
 ```
 Example:
-```
-curl --location --request GET 'http://52.228.103.155/api/v1/delivery/bb100d25-bc1b-4aca-ad28-20bb099e6d0c' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls'
+```sh
+curl --location --request GET 'http://52.139.21.27/api/v1/delivery/0fed398b-b5be-4e16-a4c9-bebf9dc42422' --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZDU1NWE4Y2MtOGUyZC00NTc5LWExNWUtMGVkYzk4NmI3NjkwIiwidGltZSI6MTYxNjc0NzgwMC42NDMxMzY3fQ.Dnv0DaDYT-icDQhk8yImUw5uSYuBipjkI0rja5YB7Lw'
 ```
 Output:
-`
-{"Count":0,"Items":[],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"39","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 07:36:14 GMT","server":"Server","x-amz-crc32":"3413411624","x-amzn-requestid":"PMIF9NB11NQIIRCMNKQJ2UNFC7VV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"PMIF9NB11NQIIRCMNKQJ2UNFC7VV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":0}
-`
+`{"Count":0,"Items":[],"ResponseMetadata":{"HTTPHeaders":{"connection":"keep-alive","content-length":"39","content-type":"application/x-amz-json-1.0","date":"Fri, 26 Mar 2021 08:51:02 GMT","server":"Server","x-amz-crc32":"3413411624","x-amzn-requestid":"0RN8L8OB59B0HOOSC8ECFSJG8BVV4KQNSO5AEMVJF66Q9ASUAAJG"},"HTTPStatusCode":200,"RequestId":"0RN8L8OB59B0HOOSC8ECFSJG8BVV4KQNSO5AEMVJF66Q9ASUAAJG","RetryAttempts":0},"ScannedCount":0}`
+
+
 
 
 
