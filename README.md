@@ -121,11 +121,6 @@ make -f az.mak start
 ```
 az login
 ```
-#### Step 7: Provision the system
-```
-make -f k8s.mak provision
-```
-
 #### Step 7: Provision the cluster
 ```
 make -f k8s.mak provision
