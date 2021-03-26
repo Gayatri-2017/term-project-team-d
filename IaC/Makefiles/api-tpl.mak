@@ -70,8 +70,6 @@ s5logs:
 #IGW=10.96.57.211:80
 #IGW=a344add95f74b453684bcd29d1461240-517644147.us-east-1.elb.amazonaws.com:80
 IGW=EXTERN
-IGW=52.139.23.80
-
 
 # keep these ones around
 USER_ID=0d2a2931-8be6-48fc-aa9e-5a0f9f536bd3
@@ -173,10 +171,7 @@ BODY_TOKEN={ \
     "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMDI3Yzk5ZWYtM2UxMi00ZmM5LWFhYzgtMTcyZjg3N2MyZDI0IiwidGltZSI6MTYwMTA3NDY0NC44MTIxNjg2fQ.hR5Gbw5t2VMpLcj8yDz1B6tcWsWCFNiHB_KHpvQVNls" \
 }
 
-
-
 #**************************************************** Service  s1 User****************************************************
-
 
 # POST is used for user (apipost) to create a new record
 cuser:
@@ -201,14 +196,11 @@ ruser:
 # PUT is used for login/logoff too
 apilogin:
 	echo curl --location --request PUT 'http://$(IGW)/api/v1/populate/login' --header 'Content-Type: application/json' --data-raw '$(BODY_UID)' > $(LOG_DIR)/apilogin.out
-	$(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/login' --header 'Content-Type: application/json' --data-raw '$(BODY_UID)' > $(LOG_DIR)/apilogin.out | tee -a $(LOG_DIR)/apilogin.out
+	$(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/login' --header 'Content-Type: application/json' --data-raw '$(BODY_UID)' | tee -a $(LOG_DIR)/apilogin.out
 
 apilogoff:
 	echo curl --location --request PUT 'http://$(IGW)/api/v1/populate/logoff' --header 'Content-Type: application/json' --data-raw '$(BODY_TOKEN)' > $(LOG_DIR)/apilogoff.out
 	$(CURL) --location --request PUT 'http://$(IGW)/api/v1/populate/logoff' --header 'Content-Type: application/json' --data-raw '$(BODY_TOKEN)' | tee -a $(LOG_DIR)/apilogoff.out
-
-
-
 
 #**************************************************** Service  s1 Restaurant****************************************************
 
@@ -216,7 +208,6 @@ apilogoff:
 crest:
 	echo curl --location --request POST 'http://$(IGW)/api/v1/populate/restaurant' --header 'Content-Type: application/json' --data-raw '$(BODY_RESTAURANT)' > $(LOG_DIR)/crest.out
 	$(CURL) --location --request POST 'http://$(IGW)/api/v1/populate/restaurant' --header 'Content-Type: application/json' --data-raw '$(BODY_RESTAURANT)' | tee -a $(LOG_DIR)/crest.out
-
 
 # PUT is used for restaurant (update) to update a record
 urest:
@@ -233,10 +224,7 @@ rrest:
 	echo curl --location --request GET 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rrest.out
 	$(CURL) --location --request GET 'http://$(IGW)/api/v1/populate/restaurant/$(RESTAURANT_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rrest.out
 
-
-
 #**************************************************** Service  s2  Order****************************************************
-
 
 # POST is used for order (apipost) to create a new record
 corder:
@@ -248,7 +236,10 @@ dorder:
 	echo curl --location --request DELETE 'http://$(IGW)/api/v1/orders/$(ORDER_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/dorder.out
 	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/orders/$(ORDER_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dorder.out
 
-
+# GET is used with order to read a record
+rorder:
+	echo curl --location --request GET 'http://$(IGW)/api/v1/orders/$(ORDER_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rorder.out
+	$(CURL) --location --request GET 'http://$(IGW)/api/v1/orders/$(ORDER_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rorder.out
 
 #**************************************************** Service  s3  Bills****************************************************
 
@@ -257,11 +248,15 @@ cbills:
 	echo curl --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' --header '$(TOKEN)' > $(LOG_DIR)/cbils.out
 	$(CURL) --location --request POST 'http://$(IGW)/api/v1/bills/' --header 'Content-Type: application/json' --data-raw '$(BODY_BILLS)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/cbills.out
 
-
 # DELETE is used to delete a record
 dbills:
 	echo curl --location --request DELETE 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/dbills.out
 	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/dbills.out
+
+# GET is used with bills to read a record
+rbills:
+	echo curl --location --request GET 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rbills.out
+	$(CURL) --location --request GET 'http://$(IGW)/api/v1/bills/$(PAYMENT_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rbills.out
 
 #**************************************************** Service  s4  Discount****************************************************
 
@@ -277,12 +272,15 @@ cdelivery:
 	echo curl --location --request POST 'http://$(IGW)/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '$(BODY_DELIVERY)' > $(LOG_DIR)/cdelivery.out
 	$(CURL) --location --request POST 'http://$(IGW)/api/v1/delivery/' --header 'Content-Type: application/json' --data-raw '$(BODY_DELIVERY)' | tee -a $(LOG_DIR)/cdelivery.out
 
-
 # DELETE is used to delete a record
 ddelivery:
 	echo curl --location --request DELETE 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID2)' --header '$(TOKEN)' > $(LOG_DIR)/ddelivery.out
 	$(CURL) --location --request DELETE 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID2)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/ddelivery.out
 
+# GET is to read a record
+rdelivery:
+	echo curl --location --request GET 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID)' --header '$(TOKEN)' > $(LOG_DIR)/rdelivery.out
+	$(CURL) --location --request GET 'http://$(IGW)/api/v1/delivery/$(DELIVERY_ID)' --header '$(TOKEN)' | tee -a $(LOG_DIR)/rdelivery.out
 
 showcontext:
 	$(KC) config get-contexts
