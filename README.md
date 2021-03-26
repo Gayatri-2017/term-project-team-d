@@ -91,4 +91,69 @@ Istio
 REST API
 
 ```
+------------
+
+Instructions for Project Execution
+------------
+
+####  Step 1: Clone the repository using the following command.
+```
+git clone https://github.com/scp-2021-jan-cmpt-756/term-project-team-d.git
+```
+####  Step 2:  Navigate to IaC/Makfiles folder and instantiate templates
+```
+make -f k8s-tpl.mak templates
+```
+####  Step 3:  Update AWS credential as follows
+- Add AWS crendetials to `~/.aws/credentials file`
+- Add AWS credentials to `tpl-vars.mak` in IaC/Makefiles folder
+
+####  Step 4:  Setup DynamoDB tables- Navigate to IaC/cluster folder and run the following command
+```
+aws cloudformation create-stack --stack-name proj-scp-2021-jan-cmpt-756 --template-body file://../cluster/cloudformationdynamodb.json
+```
+#### Step 5: Start a new cluster on Azure- Navigate to IaC/Makefiles folder and run the following command
+```
+make -f az.mak start
+```
+
+#### Step 6: login to Azure
+```
+az login
+```
+#### Step 7: Provision the cluster
+```
+make -f k8s.mak provision
+```
+- Ensure all the pods are running
+
+#### Step 8: Get the external IP by running following command
+```
+kubectl -n istio-system get service istio-ingressgateway
+```
+- copy the external IP from the output and store in $IGW variable in api.mak file 
+#### Step 9: To perform various operations related to interactions between DynomoDB tables please refer [Readme.md]( https://github.com/scp-2021-jan-cmpt-756/term-project-team-d/blob/main/IaC/README.md) in IaC folder. 
+
+#### Step 10: Gatling simulations call each of the entities through a GET call thus, hitting the API hosted on the Azure cloud. Run Gatling simulations using following commands from the root directory.
+```
+scripts/gatling.sh <number of records> ReadUserSim
+scripts/gatling.sh <number of records> ReadRestaurantSim
+scripts/gatling.sh <numbe rof records> ReadOrdersSim
+scripts/gatling.sh <number of records> ReadDiscountSim 
+scripts/gatling.sh <number of records> ReadBillsSim 
+scripts/gatling.sh <number of records> ReadDeliverySim
+```
+- for basic simulation we can use  1-5 number of records and can increase the value for load testing
+#### Step 9: Clean up steps- delete AWS stackID, stop Azure cluster and the hosted services
+```
+aws cloudformation delete-stack --stack-name proj-scp-2021-jan-cmpt-756
+make -f az.mak stop
+make -f k8s.mak scratch
+```
+
+
+
+
+
+
 
