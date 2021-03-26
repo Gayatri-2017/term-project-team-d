@@ -41,7 +41,7 @@ S5PODCONT=team-d-cmpt756s5
 
 # show deploy and pods in current ns; svc of cmpt756 ns
 ls: showcontext
-	$(KC) get gw,deployments,pods
+	$(KC) -n $(NS) get gw,deployments,pods
 	$(KC) -n $(NS) get svc
 
 s1logs:
