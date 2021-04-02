@@ -30,16 +30,59 @@ object Utility {
   }
 }
 
-
-object RUser {
+object User {
   val feeder = csv("user.csv").eager.circular
-  val ruser = forever("i") {
-    feed(feeder)
-    .exec(http("RUser ${i}")
-      .get("/api/v1/populate/user/${UUID}"))
+    val user_coverage = {
+      feed(feeder)
+      .exec(http("Create User")
+        .post("/api/v1/populate/user")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{ 
+          "user_name": "${user_name}", 
+          "user_email": "${user_email}", 
+          "user_phone": "${user_phone}"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200))
+        .check(jsonPath("$..user_id").ofType[String].saveAs("user_id")))
       .pause(1)
-  }
+      .exec(http("Login User ${user_id}")
+        .put("/api/v1/populate/user/login")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{
+          "user_id": "${user_id}" }
+          """ ))
+        .check(bodyString.saveAs("ResponseTokenLogin")))
+      .pause(1)
+      .exec(http("Read User ${user_id}")
+        .get("/api/v1/populate/user/${user_id}"))
+      .pause(1)
+      .exec(http("Update User ${user_id}")
+        .put("/api/v1/populate/user/${user_id}")
+        .header("Content-Type" , "application/json")
+        .header("authorization", "ResponseTokenLogin")
+        .body(StringBody(string = """{
+          "user_name": "Sherlock",
+          "user_email": "sherlock@gmail.com",
+          "user_phone": "1234567890"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
+      .pause(1)
+      .exec(http("LogOff User ${user_id}")
+        .put("/api/v1/populate/user/logoff")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{   "jwt": "${ResponseTokenLogin}" }""" ))
+        .check(bodyString.saveAs("ResponseTokenLogoff")))
+      .pause(1)
+      .exec(http("Delete User ${user_id}")
+        .delete("/api/v1/populate/user/${user_id}")
+        .header("authorization", "ResponseTokenLogin")
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
+    }
 }
+
 
 
 object RRestaurant {
@@ -107,11 +150,11 @@ class ReadTablesSim extends Simulation {
 }
 
 
-class ReadUserSim extends ReadTablesSim {
-  val scnReadUser = scenario("ReadUser")
-      .exec(RUser.ruser)
+class CoverageUserSim extends ReadTablesSim {
+  val scnCoverageUser = scenario("User Coverage Test")
+      .exec(User.user_coverage)
   setUp(
-    scnReadUser.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnCoverageUser.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
   ).protocols(httpProtocol)
 }
 

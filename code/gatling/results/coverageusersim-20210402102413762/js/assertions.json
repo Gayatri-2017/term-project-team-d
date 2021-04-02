@@ -1,0 +1,10 @@
+{
+  "simulation": "proj756.CoverageUserSim",
+  "simulationId": "coverageusersim",
+  "start": 1617359053762,
+  "description": "",
+  "scenarios": ["User Coverage Test"],
+  "assertions": [
+
+  ]
+}
