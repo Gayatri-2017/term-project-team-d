@@ -1,0 +1,10 @@
+{
+  "simulation": "proj756.CoverageRestaurantSim",
+  "simulationId": "coveragerestaurantsim",
+  "start": 1617409803061,
+  "description": "",
+  "scenarios": ["Populate Restaurant Coverage Test"],
+  "assertions": [
+
+  ]
+}

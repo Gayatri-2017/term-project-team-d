@@ -1,0 +1,4 @@
+RUN	proj756.CoverageDiscountSim	coveragediscountsim	1617410750090	 	3.4.2
+USER	Discount Coverage Test	START	1617410751617
+REQUEST		Get Discount	1617410751674	1617410752041	OK	 
+USER	Discount Coverage Test	END	1617410753070
