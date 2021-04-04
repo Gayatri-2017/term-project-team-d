@@ -30,69 +30,201 @@ object Utility {
   }
 }
 
-
-object RUser {
+object User {
   val feeder = csv("user.csv").eager.circular
-  val ruser = forever("i") {
-    feed(feeder)
-    .exec(http("RUser ${i}")
-      .get("/api/v1/populate/user/${UUID}"))
+    val user_coverage = {
+      feed(feeder)
+      .exec(http("Create User")
+        .post("/api/v1/populate/user")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{ 
+          "user_name": "${user_name}", 
+          "user_email": "${user_email}", 
+          "user_phone": "${user_phone}"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200))
+        .check(jsonPath("$..user_id").ofType[String].saveAs("user_id")))
       .pause(1)
-  }
+      .exec(http("Login User ${user_id}")
+        .put("/api/v1/populate/user/login")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{
+          "user_id": "${user_id}" }
+          """ ))
+        .check(bodyString.saveAs("ResponseTokenLogin")))
+      .pause(1)
+      .exec(http("Read User ${user_id}")
+        .get("/api/v1/populate/user/${user_id}")
+        .header("authorization", "ResponseTokenLogin"))
+      .pause(1)
+      .exec(http("Update User ${user_id}")
+        .put("/api/v1/populate/user/${user_id}")
+        .header("Content-Type" , "application/json")
+        .header("authorization", "ResponseTokenLogin")
+        .body(StringBody(string = """{
+          "user_name": "Sherlock",
+          "user_email": "sherlock@gmail.com",
+          "user_phone": "1234567890"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
+      .pause(1)
+      .exec(http("LogOff User ${user_id}")
+        .put("/api/v1/populate/user/logoff")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{   "jwt": "${ResponseTokenLogin}" }""" ))
+        .check(bodyString.saveAs("ResponseTokenLogoff")))
+      .pause(1)
+      .exec(http("Delete User ${user_id}")
+        .delete("/api/v1/populate/user/${user_id}")
+        .header("authorization", "ResponseTokenLogin")
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
+    }
 }
 
 
-object RRestaurant {
+
+object Restaurant {
   val feeder = csv("restaurant.csv").eager.circular
-  val rrestaurant = forever("i") {
-    feed(feeder)
-    .exec(http("RRestaurant ${i}")
-      .get("/api/v1/populate/restaurant/${UUID}"))
+    val restaurant_coverage = {
+      feed(feeder)
+      .exec(http("Create Restaurant")
+        .post("/api/v1/populate/restaurant")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{ 
+          "restaurant_name": "${restaurant_name}", 
+          "food_name": "${food_name}", 
+          "food_price": "${food_price}"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200))
+        .check(jsonPath("$..restaurant_id").ofType[String].saveAs("restaurant_id")))
       .pause(1)
+      .exec(http("Read Restaurant ${restaurant_id}")
+        .get("/api/v1/populate/restaurant/${restaurant_id}")
+        .header("authorization", "ResponseTokenLogin"))
+      .pause(1)
+      .exec(http("Update Restaurant ${restaurant_id}")
+        .put("/api/v1/populate/restaurant/${restaurant_id}")
+        .header("Content-Type" , "application/json")
+        .header("authorization", "ResponseTokenLogin")
+        .body(StringBody(string = """{
+          "restaurant_name": "Tandoori Flame",
+          "food_name": "Masala Dosa",
+          "food_price": "20"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
+      .pause(1)
+      .exec(http("Delete Restaurant ${restaurant_id}")
+        .delete("/api/v1/populate/restaurant/${restaurant_id}")
+        .header("authorization", "ResponseTokenLogin")
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
   }
 }
 
 
-object ROrders {
+object Orders {
   val feeder = csv("orders.csv").eager.circular
-  val rorders = forever("i") {
-    feed(feeder)
-    .exec(http("ROrders ${i}")
-      .get("/api/v1/orders/${UUID}"))
+    val orders_coverage = {
+      feed(feeder)
+      .exec(http("Create Orders")
+        .post("/api/v1/orders/")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{ 
+          "user_id": "${user_id}", 
+          "restaurant_id": "${restaurant_id}", 
+          "food_name": "${food_name}"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200))
+        .check(jsonPath("$..order_id").ofType[String].saveAs("order_id")))
       .pause(1)
+      .exec(http("Read Orders ${order_id}")
+        .get("/api/v1/orders/${order_id}")
+        .header("authorization", "ResponseTokenLogin"))
+      .pause(1)
+      .exec(http("Delete Orders ${order_id}")
+        .delete("/api/v1/orders/${order_id}")
+        .header("authorization", "ResponseTokenLogin")
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
   }
 }
 
 
-object RBills {
+object Bills {
   val feeder = csv("bills.csv").eager.circular
-  val rbills = forever("i") {
-    feed(feeder)
-    .exec(http("RBills ${i}")
-      .get("/api/v1/bills/${UUID}"))
+    val bills_coverage = {
+      feed(feeder)
+      .exec(http("Create Payment")
+        .post("/api/v1/bills/")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{ 
+          "payment_method": "${payment_method}", 
+          "discount_applied": "${discount_applied}", 
+          "payment_amount": "${discount_applied}", 
+          "user_id": "${user_id}", 
+          "order_id": "${order_id}", 
+          "restaurant_id": "${restaurant_id}", 
+          "food_name": "${food_name}"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200))
+        .check(jsonPath("$..payment_id").ofType[String].saveAs("payment_id")))
       .pause(1)
+      .exec(http("Read Payment ${payment_id}")
+        .get("/api/v1/bills/${payment_id}")
+        .header("authorization", "ResponseTokenLogin"))
+      .pause(1)
+      .exec(http("Delete Payment ${payment_id}")
+        .delete("/api/v1/bills/${payment_id}")
+        .header("authorization", "ResponseTokenLogin")
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
   }
 }
 
 
-object RDiscount {
+object Discount {
   val feeder = csv("discount.csv").eager.circular
-  val rdiscount = forever("i") {
+  val discount_coverage = {
     feed(feeder)
-    .exec(http("RDiscount ${i}")
+    .exec(http("Get Discount")
       .get("/api/v1/discount/show_discount?payment_id=${payment_id}&order_id=${order_id}&user_id=${user_id}"))
       .pause(1)
   }
 }
 
 
-object RDelivery {
+object Delivery {
   val feeder = csv("delivery.csv").eager.circular
-  val rdelivery = forever("i") {
-    feed(feeder)
-    .exec(http("RDelivery ${i}")
-      .get("/api/v1/delivery/${UUID}"))
+    val delivery_coverage = {
+      feed(feeder)
+      .exec(http("Create Delivery")
+        .post("/api/v1/delivery/")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{ 
+          "driver_name": "${driver_name}", 
+          "predicted_delivery_time": "${predicted_delivery_time}", 
+          "order_id": "${order_id}"}
+          """ ))
+        .check(status.not(404), status.not(500))
+        .check(status.is(200))
+        .check(jsonPath("$..delivery_id").ofType[String].saveAs("delivery_id")))
       .pause(1)
+      .exec(http("Read Delivery ${delivery_id}")
+        .get("/api/v1/delivery/${delivery_id}")
+        .header("authorization", "ResponseTokenLogin"))
+      .pause(1)
+      .exec(http("Delete Delivery ${delivery_id}")
+        .delete("/api/v1/delivery/${delivery_id}")
+        .header("authorization", "ResponseTokenLogin")
+        .check(status.not(404), status.not(500))
+        .check(status.is(200)))
   }
 }
 
@@ -107,55 +239,55 @@ class ReadTablesSim extends Simulation {
 }
 
 
-class ReadUserSim extends ReadTablesSim {
-  val scnReadUser = scenario("ReadUser")
-      .exec(RUser.ruser)
+class CoverageUserSim extends ReadTablesSim {
+  val scnCoverageUser = scenario("Populate User Coverage Test")
+      .exec(User.user_coverage)
   setUp(
-    scnReadUser.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnCoverageUser.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
   ).protocols(httpProtocol)
 }
 
 
-class ReadRestaurantSim extends ReadTablesSim {
-  val scnReadRestaurant = scenario("ReadRestaurant")
-      .exec(RRestaurant.rrestaurant)
+class CoverageRestaurantSim extends ReadTablesSim {
+  val scnCoverageRestaurant = scenario("Populate Restaurant Coverage Test")
+      .exec(Restaurant.restaurant_coverage)
   setUp(
-    scnReadRestaurant.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnCoverageRestaurant.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
   ).protocols(httpProtocol)
 }
 
 
-class ReadOrdersSim extends ReadTablesSim {
-  val scnReadOrders = scenario("ReadOrders")
-      .exec(ROrders.rorders)
+class CoverageOrdersSim extends ReadTablesSim {
+  val scnCoverageOrders = scenario("Orders Coverage Test")
+      .exec(Orders.orders_coverage)
   setUp(
-    scnReadOrders.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnCoverageOrders.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
   ).protocols(httpProtocol)
 }
 
 
-class ReadBillsSim extends ReadTablesSim {
-  val scnReadBills = scenario("ReadBills")
-      .exec(RBills.rbills)
+class CoverageBillsSim extends ReadTablesSim {
+  val scnCoverageBills = scenario("Bills Coverage Test")
+      .exec(Bills.bills_coverage)
   setUp(
-    scnReadBills.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnCoverageBills.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
   ).protocols(httpProtocol)
 }
 
 
-class ReadDiscountSim extends ReadTablesSim {
-  val scnReadDiscount = scenario("ReadDiscount")
-      .exec(RDiscount.rdiscount)
+class CoverageDiscountSim extends ReadTablesSim {
+  val scnCoverageDiscount = scenario("Discount Coverage Test")
+      .exec(Discount.discount_coverage)
   setUp(
-    scnReadDiscount.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnCoverageDiscount.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
   ).protocols(httpProtocol)
 }
 
 
-class ReadDeliverySim extends ReadTablesSim {
-  val scnReadDelivery = scenario("ReadDelivery")
-      .exec(RDelivery.rdelivery)
+class CoverageDeliverySim extends ReadTablesSim {
+  val scnCoverageDelivery = scenario("ReadDelivery")
+      .exec(Delivery.delivery_coverage)
   setUp(
-    scnReadDelivery.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnCoverageDelivery.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
   ).protocols(httpProtocol)
 }

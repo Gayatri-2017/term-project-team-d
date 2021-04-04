@@ -150,12 +150,12 @@ kubectl -n istio-system get service istio-ingressgateway
 
 #### Step 11: Gatling simulations call each of the entities through a GET call thus, hitting the API hosted on the Azure cloud. Run Gatling simulations using following commands from the root directory.
 ```
-scripts/gatling.sh <number of records> ReadUserSim
-scripts/gatling.sh <number of records> ReadRestaurantSim
-scripts/gatling.sh <numbe rof records> ReadOrdersSim
-scripts/gatling.sh <number of records> ReadDiscountSim 
-scripts/gatling.sh <number of records> ReadBillsSim 
-scripts/gatling.sh <number of records> ReadDeliverySim
+scripts/gatling.sh <number of records> CoverageUserSim
+scripts/gatling.sh <number of records> CoverageRestaurantSim
+scripts/gatling.sh <numbe rof records> CoverageOrdersSim
+scripts/gatling.sh <number of records> CoverageDiscountSim 
+scripts/gatling.sh <number of records> CoverageBillsSim 
+scripts/gatling.sh <number of records> CoverageDeliverySim
 ```
 - for basic simulation we can use  1-5 number of records and can increase the value for load testing
 #### Step 12: Clean up steps- delete AWS stackID, stop Azure cluster and the hosted services
