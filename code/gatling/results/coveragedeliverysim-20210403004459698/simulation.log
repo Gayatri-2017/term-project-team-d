@@ -1,0 +1,4 @@
+RUN	proj756.CoverageDeliverySim	coveragedeliverysim	1617410699698	 	3.4.2
+USER	ReadDelivery	START	1617410701151
+ERROR	Create Delivery: Failed to build request: No attribute named 'discount_applied' is defined 	1617410701189
+USER	ReadDelivery	END	1617410703212

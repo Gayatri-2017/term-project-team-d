@@ -148,26 +148,31 @@ kubectl -n istio-system get service istio-ingressgateway
 - copy the external IP from the output and store in $IGW variable in api.mak file 
 #### Step 10: To perform various operations related to interactions between DynomoDB tables please refer [Readme.md]( https://github.com/scp-2021-jan-cmpt-756/term-project-team-d/blob/main/IaC/README.md) in IaC folder. 
 
-#### Step 11: Gatling simulations call each of the entities through a GET call thus, hitting the API hosted on the Azure cloud. Run Gatling simulations using following commands from the root directory.
+#### Step 11: Gatling simulations call each of the entities through a REST API call thus, hitting the API hosted on the Azure cloud. Run Gatling simulations using following commands from the root directory.
 ```
-scripts/gatling.sh <number of records> ReadUserSim
-scripts/gatling.sh <number of records> ReadRestaurantSim
-scripts/gatling.sh <numbe rof records> ReadOrdersSim
-scripts/gatling.sh <number of records> ReadDiscountSim 
-scripts/gatling.sh <number of records> ReadBillsSim 
-scripts/gatling.sh <number of records> ReadDeliverySim
+scripts/gatling.sh <number of records> CoverageUserSim
+scripts/gatling.sh <number of records> CoverageRestaurantSim
+scripts/gatling.sh <numbe rof records> CoverageOrdersSim
+scripts/gatling.sh <number of records> CoverageDiscountSim 
+scripts/gatling.sh <number of records> CoverageBillsSim 
+scripts/gatling.sh <number of records> CoverageDeliverySim
 ```
-- for basic simulation we can use  1-5 number of records and can increase the value for load testing
-#### Step 12: Clean up steps- delete AWS stackID, stop Azure cluster and the hosted services
+- for coverage simulation we can use  1-5 number of records
+
+#### Step 12: Load simulation is run using Gatling Standalone v3.4.2 and Scala 2.12.2. Run the following commands for a Linux terminal with root access. (You can also follow the online instructions to install Gatling standalone for other OS)
+```
+wget http://scala-lang.org/files/archive/scala-2.12.2.deb
+dpkg -i scala-2.12.2.deb
+wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.4.2/gatling-charts-highcharts-bundle-3.4.2-bundle.zip
+unzip gatling-charts-highcharts-bundle-3.4.2-bundle.zip
+```
+- Update the gatling.sh in the local bin directory with the one from the Github repository at code/gatling-charts-highcharts-bundle-3.4.2/bin/gatling.sh, and replace the folder user-files in your local gatling installation with the repository version of the folder at code/gatling-charts-highcharts-bundle-3.4.2/user-files/
+- Follow the folder structure as shown in the repository by unzipping the gatling bundle in the code folder
+- Copy the external IP from Step 9 and modify the baseUrl parameter in the httpProtocol variable for the scala file code/gatling-charts-highcharts-bundle-3.4.2/user-files/simulations/proj756/ReadTables.scala
+
+#### Step 13: Clean up steps- delete AWS stackID, stop Azure cluster and the hosted services
 ```
 aws cloudformation delete-stack --stack-name proj-scp-2021-jan-cmpt-756
 make -f az.mak stop
 make -f k8s.mak scratch
 ```
-
-
-
-
-
-
-
