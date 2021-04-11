@@ -33,99 +33,6 @@ object Utility {
   }
 }
 
-object LoadUserTest {
-  val feeder = csv("user_load_values.csv").eager.circular
-  val user_load = {
-    feed(feeder)
-      .exec(http("Load Test Simulation")
-        .post("/api/v1/populate/user")
-        .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{
-          "user_name": "${user_name}",
-          "user_email": "${user_email}",
-          "user_phone": "${user_phone}"}
-          """ ))
-        .check(status.is(200))
-        .check(jsonPath("$..user_id").ofType[String].saveAs("userId")))
-      .exec(http("Login User ${userId}")
-        .put("/api/v1/populate/login")
-        .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{
-          "user_id": "${userId}" }
-          """ ))
-        .check(status.is(200))
-        .check(bodyString.saveAs("loginToken")))
-      .exec(http("Create new order")
-        .post("/api/v1/orders/")
-        .header("Content-Type" , "application/json")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .body(StringBody(string = """{
-          "user_id": "${userId}",
-          "restaurant_id": "${restaurant_id}",
-          "food_name": "${food_name}"}
-          """ ))
-        .check(status.is(200))
-        .check(jsonPath("$..order_id").ofType[String].saveAs("orderId")))
-      .exec(http("Review order ${orderId}")
-        .get("/api/v1/orders/${orderId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}""")))
-      .exec(http("Add payment for submitted order ${orderId}")
-        .post("/api/v1/bills/")
-        .header("Content-Type" , "application/json")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .body(StringBody(string = """{
-          "payment_method": "${payment_method}",
-          "discount_applied": "${discount_applied}",
-          "payment_amount": "${payment_amount}",
-          "user_id": "${userId}",
-          "order_id": "${orderId}",
-          "restaurant_id": "${restaurant_id}",
-          "food_name": "${food_name}"}
-          """ ))
-        .check(status.is(200))
-        .check(jsonPath("$..payment_id").ofType[String].saveAs("paymentId")))
-      .exec(http("Review payment ${paymentId}")
-        .get("/api/v1/bills/${paymentId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))
-      .exec(http("Review Discount ${paymentId}")
-        .get("/api/v1/discount/show_discount?payment_id=${paymentId}&order_id=${orderId}&user_id=${userId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))
-      .exec(http("Add delivery details for order ${orderId}")
-        .post("/api/v1/delivery/")
-        .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{
-          "driver_name": "${driver_name}",
-          "predicted_delivery_time": "${predicted_delivery_time}",
-          "order_id": "${orderId}"}
-          """ ))
-        .check(status.is(200))
-        .check(jsonPath("$..delivery_id").ofType[String].saveAs("deliveryId")))
-      .exec(http("LogOff User ${userId}")
-        .put("/api/v1/populate/logoff")
-        .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{   "jwt": "${loginToken}" }""" ))
-        .check(status.is(200)))
-      .exec(http("Delete Delivery ${deliveryId}")
-        .delete("/api/v1/delivery/${deliveryId}")
-        .header("Authorization" , StringBody("""Bearer ${ResponseTokenLogin}"""))
-        .check(status.is(200)))
-      .exec(http("Delete Payment ${paymentId}")
-        .delete("/api/v1/bills/${paymentId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))
-      .exec(http("Delete Order ${orderId}")
-        .delete("/api/v1/orders/${orderId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))
-      .exec(http("Delete User ${userId}")
-        .delete("/api/v1/populate/user/${userId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))
-  }
-}
-
 object User {
   val feeder = csv("user.csv").eager.circular
   val user_coverage = {
@@ -334,13 +241,6 @@ class ReadTablesSim extends Simulation {
     .acceptLanguageHeader("en-US,en;q=0.5")
 }
 
-class LoadUserSim extends ReadTablesSim {
-  val scnLoadUser = scenario("Populate User Load Test")
-    .exec(LoadUserTest.user_load)
-  setUp(
-    scnLoadUser.inject(constantConcurrentUsers(20).during(10 minute))
-  ).protocols(httpProtocol)
-}
 
 class CoverageUserSim extends ReadTablesSim {
   val scnCoverageUser = scenario("Populate User Coverage Test")
