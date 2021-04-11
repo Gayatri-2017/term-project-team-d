@@ -142,7 +142,7 @@ object LoadUserTest {
 class ReadTablesSim extends Simulation {
   val httpProtocol = http
     //.baseUrl("http://" + Utility.envVar("CLUSTER_IP", "127.0.0.1") + "/")
-	.baseUrl("http://52.228.123.104/")
+    .baseUrl("http://52.228.123.104/")
     .acceptHeader("application/json,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
     .authorizationHeader("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZGJmYmMxYzAtMDc4My00ZWQ3LTlkNzgtMDhhYTRhMGNkYTAyIiwidGltZSI6MTYwNzM2NTU0NC42NzIwNTIxfQ.zL4i58j62q8mGUo5a0SQ7MHfukBUel8yl8jGT5XmBPo")
     .acceptLanguageHeader("en-US,en;q=0.5")
