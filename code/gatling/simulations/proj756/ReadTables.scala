@@ -33,99 +33,6 @@ object Utility {
   }
 }
 
-object LoadUserTest {
-  val feeder = csv("user_load_values.csv").eager.circular
-  val user_load = {
-    feed(feeder)
-      .exec(http("Load Test Simulation")
-        .post("/api/v1/populate/user")
-        .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{
-          "user_name": "${user_name}",
-          "user_email": "${user_email}",
-          "user_phone": "${user_phone}"}
-          """ ))
-        .check(status.is(200))
-        .check(jsonPath("$..user_id").ofType[String].saveAs("userId")))      
-      .exec(http("Login User ${userId}")
-        .put("/api/v1/populate/login")
-        .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{
-          "user_id": "${userId}" }
-          """ ))
-        .check(status.is(200))
-        .check(bodyString.saveAs("loginToken")))    
-      .exec(http("Create new order")
-        .post("/api/v1/orders/")
-        .header("Content-Type" , "application/json")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .body(StringBody(string = """{
-          "user_id": "${userId}",
-          "restaurant_id": "${restaurant_id}",
-          "food_name": "${food_name}"}
-          """ ))
-        .check(status.is(200))
-        .check(jsonPath("$..order_id").ofType[String].saveAs("orderId")))      
-      .exec(http("Review order ${orderId}")
-        .get("/api/v1/orders/${orderId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}""")))      
-      .exec(http("Add payment for submitted order ${orderId}")
-        .post("/api/v1/bills/")
-        .header("Content-Type" , "application/json")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .body(StringBody(string = """{
-          "payment_method": "${payment_method}",
-          "discount_applied": "${discount_applied}",
-          "payment_amount": "${payment_amount}",
-          "user_id": "${userId}",
-          "order_id": "${orderId}",
-          "restaurant_id": "${restaurant_id}",
-          "food_name": "${food_name}"}
-          """ ))
-        .check(status.is(200))
-        .check(jsonPath("$..payment_id").ofType[String].saveAs("paymentId")))      
-      .exec(http("Review payment ${paymentId}")
-        .get("/api/v1/bills/${paymentId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))      
-      .exec(http("Review Discount ${paymentId}")
-        .get("/api/v1/discount/show_discount?payment_id=${paymentId}&order_id=${orderId}&user_id=${userId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))      
-      .exec(http("Add delivery details for order ${orderId}")
-        .post("/api/v1/delivery/")
-        .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{
-          "driver_name": "${driver_name}",
-          "predicted_delivery_time": "${predicted_delivery_time}",
-          "order_id": "${orderId}"}
-          """ ))
-        .check(status.is(200))
-        .check(jsonPath("$..delivery_id").ofType[String].saveAs("deliveryId")))      
-      .exec(http("LogOff User ${userId}")
-        .put("/api/v1/populate/logoff")
-        .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{   "jwt": "${loginToken}" }""" ))
-        .check(status.is(200)))      
-      .exec(http("Delete Delivery ${deliveryId}")
-        .delete("/api/v1/delivery/${deliveryId}")
-        .header("authorization", "ResponseTokenLogin")
-        .check(status.is(200)))
-      .exec(http("Delete Payment ${paymentId}")
-        .delete("/api/v1/bills/${paymentId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))
-      .exec(http("Delete Order ${orderId}")
-        .delete("/api/v1/orders/${orderId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))
-      .exec(http("Delete User ${userId}")
-        .delete("/api/v1/populate/user/${userId}")
-        .header("Authorization" , StringBody("""Bearer ${loginToken}"""))
-        .check(status.is(200)))
-  }
-}
-
 object User {
   val feeder = csv("user.csv").eager.circular
   val user_coverage = {
@@ -152,12 +59,12 @@ object User {
       .pause(1)
       .exec(http("Read User ${user_id}")
         .get("/api/v1/populate/user/${user_id}")
-        .header("authorization", "ResponseTokenLogin"))
+        .header("Authorization" , StringBody("""Bearer ${ResponseTokenLogin}""")))
       .pause(1)
       .exec(http("Update User ${user_id}")
         .put("/api/v1/populate/user/${user_id}")
         .header("Content-Type" , "application/json")
-        .header("authorization", "ResponseTokenLogin")
+        .header("Authorization" , StringBody("""Bearer ${ResponseTokenLogin}"""))
         .body(StringBody(string = """{
           "user_name": "Sherlock",
           "user_email": "sherlock@gmail.com",
@@ -174,7 +81,7 @@ object User {
       .pause(1)
       .exec(http("Delete User ${user_id}")
         .delete("/api/v1/populate/user/${user_id}")
-        .header("authorization", "ResponseTokenLogin")
+        .header("Authorization" , StringBody("""Bearer ${ResponseTokenLogin}"""))
         .check(status.not(404), status.not(500))
         .check(status.is(200)))
   }
@@ -189,9 +96,9 @@ object Restaurant {
       .exec(http("Create Restaurant")
         .post("/api/v1/populate/restaurant")
         .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{ 
-          "restaurant_name": "${restaurant_name}", 
-          "food_name": "${food_name}", 
+        .body(StringBody(string = """{
+          "restaurant_name": "${restaurant_name}",
+          "food_name": "${food_name}",
           "food_price": "${food_price}"}
           """ ))
         .check(status.not(404), status.not(500))
@@ -200,12 +107,12 @@ object Restaurant {
       .pause(1)
       .exec(http("Read Restaurant ${restaurant_id}")
         .get("/api/v1/populate/restaurant/${restaurant_id}")
-        .header("authorization", "ResponseTokenLogin"))
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}""")))
       .pause(1)
       .exec(http("Update Restaurant ${restaurant_id}")
         .put("/api/v1/populate/restaurant/${restaurant_id}")
         .header("Content-Type" , "application/json")
-        .header("authorization", "ResponseTokenLogin")
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}"""))
         .body(StringBody(string = """{
           "restaurant_name": "Tandoori Flame",
           "food_name": "Masala Dosa",
@@ -216,7 +123,7 @@ object Restaurant {
       .pause(1)
       .exec(http("Delete Restaurant ${restaurant_id}")
         .delete("/api/v1/populate/restaurant/${restaurant_id}")
-        .header("authorization", "ResponseTokenLogin")
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}"""))
         .check(status.not(404), status.not(500))
         .check(status.is(200)))
   }
@@ -230,9 +137,9 @@ object Orders {
       .exec(http("Create Orders")
         .post("/api/v1/orders/")
         .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{ 
-          "user_id": "${user_id}", 
-          "restaurant_id": "${restaurant_id}", 
+        .body(StringBody(string = """{
+          "user_id": "${user_id}",
+          "restaurant_id": "${restaurant_id}",
           "food_name": "${food_name}"}
           """ ))
         .check(status.not(404), status.not(500))
@@ -241,11 +148,11 @@ object Orders {
       .pause(1)
       .exec(http("Read Orders ${order_id}")
         .get("/api/v1/orders/${order_id}")
-        .header("authorization", "ResponseTokenLogin"))
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}""")))
       .pause(1)
       .exec(http("Delete Orders ${order_id}")
         .delete("/api/v1/orders/${order_id}")
-        .header("authorization", "ResponseTokenLogin")
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}"""))
         .check(status.not(404), status.not(500))
         .check(status.is(200)))
   }
@@ -259,13 +166,13 @@ object Bills {
       .exec(http("Create Payment")
         .post("/api/v1/bills/")
         .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{ 
-          "payment_method": "${payment_method}", 
-          "discount_applied": "${discount_applied}", 
-          "payment_amount": "${discount_applied}", 
-          "user_id": "${user_id}", 
-          "order_id": "${order_id}", 
-          "restaurant_id": "${restaurant_id}", 
+        .body(StringBody(string = """{
+          "payment_method": "${payment_method}",
+          "discount_applied": "${discount_applied}",
+          "payment_amount": "${discount_applied}",
+          "user_id": "${user_id}",
+          "order_id": "${order_id}",
+          "restaurant_id": "${restaurant_id}",
           "food_name": "${food_name}"}
           """ ))
         .check(status.not(404), status.not(500))
@@ -274,11 +181,11 @@ object Bills {
       .pause(1)
       .exec(http("Read Payment ${payment_id}")
         .get("/api/v1/bills/${payment_id}")
-        .header("authorization", "ResponseTokenLogin"))
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}""")))
       .pause(1)
       .exec(http("Delete Payment ${payment_id}")
         .delete("/api/v1/bills/${payment_id}")
-        .header("authorization", "ResponseTokenLogin")
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}"""))
         .check(status.not(404), status.not(500))
         .check(status.is(200)))
   }
@@ -303,9 +210,9 @@ object Delivery {
       .exec(http("Create Delivery")
         .post("/api/v1/delivery/")
         .header("Content-Type" , "application/json")
-        .body(StringBody(string = """{ 
-          "driver_name": "${driver_name}", 
-          "predicted_delivery_time": "${predicted_delivery_time}", 
+        .body(StringBody(string = """{
+          "driver_name": "${driver_name}",
+          "predicted_delivery_time": "${predicted_delivery_time}",
           "order_id": "${order_id}"}
           """ ))
         .check(status.not(404), status.not(500))
@@ -314,11 +221,11 @@ object Delivery {
       .pause(1)
       .exec(http("Read Delivery ${delivery_id}")
         .get("/api/v1/delivery/${delivery_id}")
-        .header("authorization", "ResponseTokenLogin"))
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}""")))
       .pause(1)
       .exec(http("Delete Delivery ${delivery_id}")
         .delete("/api/v1/delivery/${delivery_id}")
-        .header("authorization", "ResponseTokenLogin")
+        .header("Authorization" , StringBody("""Bearer {ResponseTokenLogin}"""))
         .check(status.not(404), status.not(500))
         .check(status.is(200)))
   }
@@ -334,13 +241,6 @@ class ReadTablesSim extends Simulation {
     .acceptLanguageHeader("en-US,en;q=0.5")
 }
 
-class LoadUserSim extends ReadTablesSim {
-  val scnLoadUser = scenario("Populate User Load Test")
-    .exec(LoadUserTest.user_load)
-  setUp(
-    scnLoadUser.inject(constantConcurrentUsers(20).during(10 minute))
-  ).protocols(httpProtocol)
-}
 
 class CoverageUserSim extends ReadTablesSim {
   val scnCoverageUser = scenario("Populate User Coverage Test")
