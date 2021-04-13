@@ -33,6 +33,54 @@ object Utility {
   }
 }
 
+object UserloginTest {
+  val feeder = csv("data/user_login.csv").eager.circular
+  val login_load = {
+    feed(feeder)
+      .exec(http("Login Load simulation Scenerio ${user_id}")
+        .put("/api/v1/populate/login")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{
+                        "user_id": "${user_id}" }
+                        """ ))
+        .check(status.is(200))
+        .check(bodyString.saveAs("loginToken")))
+      .pause(2)
+      .exec(http("Logoff after just browsing sometime in the application") 
+        .put("/api/v1/populate/logoff")
+        .header("Content-Type" , "application/json")
+        .body(StringBody(string = """{   "jwt": "${loginToken}" }""" ))
+        .check(status.is(200)))
+      .pause(2)
+    }
+}
+
+object LoadReadRestaurantTest {
+  val feeder = csv("data/user_login_restaurant.csv").eager.circular
+  val read_restaurant_load = {
+    feed(feeder)
+      .exec(http("Browse Restaurant Load simulation Scenerio - login")
+      .put("/api/v1/populate/login")
+      .header("Content-Type" , "application/json")
+      .body(StringBody(string = """{
+          "user_id": "${user_id}" }
+          """ ))
+      .check(status.is(200))
+      .check(bodyString.saveAs("loginToken")))
+      .pause(2) 
+      .exec(http("Read Restaurant ${restaurant_id}")
+        .get("/api/v1/populate/restaurant/${restaurant_id}")
+        .header("Authorization" , StringBody( """Bearer {ResponseTokenLogin}""" )))
+      .pause(2)
+      .exec(http("Logoff application")
+      .put("/api/v1/populate/logoff")
+      .header("Content-Type" , "application/json")
+      .body(StringBody(string = """{   "jwt": "${loginToken}" }""" ))
+      .check(status.is(200)))
+      .pause(2)
+    }
+}
+
 object LoadUserTest {
   val feeder = csv("data/user_load_values.csv").eager.circular
   val user_load = {
@@ -142,7 +190,7 @@ object LoadUserTest {
 class ReadTablesSim extends Simulation {
   val httpProtocol = http
     //.baseUrl("http://" + Utility.envVar("CLUSTER_IP", "127.0.0.1") + "/")
-    .baseUrl("http://52.228.123.104/")
+    .baseUrl("http://20.151.40.87/")
     .acceptHeader("application/json,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
     .authorizationHeader("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZGJmYmMxYzAtMDc4My00ZWQ3LTlkNzgtMDhhYTRhMGNkYTAyIiwidGltZSI6MTYwNzM2NTU0NC42NzIwNTIxfQ.zL4i58j62q8mGUo5a0SQ7MHfukBUel8yl8jGT5XmBPo")
     .acceptLanguageHeader("en-US,en;q=0.5")
@@ -150,6 +198,20 @@ class ReadTablesSim extends Simulation {
 
 class LoadUserSim extends ReadTablesSim {
   val scnLoadUser = scenario("Populate User Load Test")
+    .exec(UserloginTest.login_load)
+    .pause(2)
+    .exec(LoadReadRestaurantTest.read_restaurant_load)
+    .pause(2)
+    .exec(LoadReadRestaurantTest.read_restaurant_load)
+    .pause(2)
+    .exec(LoadReadRestaurantTest.read_restaurant_load)
+    .pause(2)
+    .exec(LoadReadRestaurantTest.read_restaurant_load)
+    .pause(2)
+    .exec(LoadReadRestaurantTest.read_restaurant_load)
+    .pause(2)
+    .exec(LoadReadRestaurantTest.read_restaurant_load)
+    .pause(2)
     .exec(LoadUserTest.user_load)
   setUp(
     scnLoadUser.inject(constantConcurrentUsers(50).during(30.minutes))

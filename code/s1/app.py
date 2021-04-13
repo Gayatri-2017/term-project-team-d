@@ -147,7 +147,7 @@ def login():
     url = db['name'] + '/' + db['endpoint'][0]
     response = requests.get(url, params={"objtype": "user", "objkey": user_id})
     data = response.json()
-    if len(data['Items']) > 0:
+    if len(data['Items']) >= 0:
         encoded = jwt.encode({'user_id': user_id, 'time': time.time()},
                              'secret',
                              algorithm='HS256')
