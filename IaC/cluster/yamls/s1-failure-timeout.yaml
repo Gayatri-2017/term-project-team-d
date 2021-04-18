@@ -15,7 +15,7 @@ spec:
       delay:
         fixedDelay: 10s
         percentage:
-          value: 100
+          value: 25
     route:
     - destination:
         host: team-d-cmpt756s1
