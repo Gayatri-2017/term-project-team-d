@@ -20,3 +20,4 @@ IaC/Makefiles/api.mak
 IaC/Makefiles/az.mak
 IaC/Makefiles/k8s.mak
 IaC/logs/
+.DS_Store

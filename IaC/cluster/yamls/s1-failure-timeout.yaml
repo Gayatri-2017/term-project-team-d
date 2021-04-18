@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: team-d-cmpt756s1
+spec:
+  hosts:
+  # We do not know the hostname of traffic from this gateway, so
+  # apply this VS to every request entering it.
+  - "*"
+  # As an externally-visible service, this only applies to the gateway
+  gateways:
+  - c756-gateway
+  http:
+  - fault:
+      delay:
+        fixedDelay: 10s
+        percentage:
+          value: 25
+    route:
+    - destination:
+        host: team-d-cmpt756s1
+        port:
+          number: 30001
+    timeout: 2s
+  - match:
+    - uri:
+        prefix: /api/v1/populate
+    rewrite:
+      uri: /api/v1/populate
+    route:
+    - destination:
+        host: team-d-cmpt756s1
+        port:
+          number: 30001
+    
