@@ -181,7 +181,13 @@ cd code/gatling-charts-highcharts-bundle-3.4.2/bin
 - Verify that the GATLING_HOME is set correctly and pointing to your unzipped folder in the code directory
 - The Gatling results will be stored in the results folder
 
-#### Step 13: Clean up steps- delete AWS stackID, stop Azure cluster and the hosted services
+#### Step 13: Failure analysis
+- Move to yamls/ directory. To inject failure, keep the ./gatling.sh running from previous step. Choose the type of failure from s1-failure-<failure_type>.yaml and run the following
+```
+kubectl apply -f s1-failure-timeout.yaml -n c756ns
+```
+- To get the original version, reapply s1-vs.yaml
+#### Step 14: Clean up steps- delete AWS stackID, stop Azure cluster and the hosted services
 ```
 aws cloudformation delete-stack --stack-name proj-scp-2021-jan-cmpt-756
 make -f az.mak stop
