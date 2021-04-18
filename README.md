@@ -164,11 +164,22 @@ scripts/gatling.sh <number of records> CoverageDeliverySim
 wget http://scala-lang.org/files/archive/scala-2.12.2.deb
 dpkg -i scala-2.12.2.deb
 wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.4.2/gatling-charts-highcharts-bundle-3.4.2-bundle.zip
+cd code
 unzip gatling-charts-highcharts-bundle-3.4.2-bundle.zip
 ```
-- Update the gatling.sh in the local bin directory with the one from the Github repository at code/gatling-charts-highcharts-bundle-3.4.2/bin/gatling.sh, and replace the folder user-files in your local gatling installation with the repository version of the folder at code/gatling-charts-highcharts-bundle-3.4.2/user-files/
-- Follow the folder structure as shown in the repository by unzipping the gatling bundle in the code folder
+- Make a copy of the existing folder gatling-charts-highcharts-bundle-3.4.2 in the code directory of the repository (which you will have if you cloned the repository before unzipping)
+- Modify the Gatling home path to be the unzipped folder path in tpl-vars.txt and run k8s-tpl.mak as shown in step 3 (Alternatively, run the following command: export GATLING_HOME=<path to the unzipped Gatling folder>)
+- Replace gatling.sh in you local installation with the one from the repository at code/gatling-charts-highcharts-bundle-3.4.2/bin/gatling.sh
+- Replace the folder user-files in your local installation with the one from the repository at code/gatling-charts-highcharts-bundle-3.4.2/user-files/  (Replace the scala file and the csv files in your local installation with the ones in the repository)
 - Copy the external IP from Step 9 and modify the baseUrl parameter in the httpProtocol variable for the scala file code/gatling-charts-highcharts-bundle-3.4.2/user-files/simulations/proj756/ReadTables.scala
+- Once all the above changes are done, run gatling.sh using the following commands (assuming you are in the folder term-project-team-d)
+```
+cd code/gatling-charts-highcharts-bundle-3.4.2/bin
+./gatling.sh   
+```
+- Select option 0 for the LoadUserSim scenario and give the test run an optional name
+- Verify that the GATLING_HOME is set correctly and pointing to your unzipped folder in the code directory
+- The Gatling results will be stored in the results folder
 
 #### Step 13: Clean up steps- delete AWS stackID, stop Azure cluster and the hosted services
 ```
