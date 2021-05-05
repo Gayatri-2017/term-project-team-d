@@ -1,12 +1,12 @@
 
-# CMPT 756 Project: 
+# CMPT 756 Distributed and Cloud Systems Course Project: 
 
 ## Problem Domain and Application
 
 ### Great Feasts
 Given the fast paced environment that we are living in and the advent of the technologies that have made our lives dependent on it, we propose the solution for a food delivery service “Great Feasts”.  Especially during the Pandemic era, ordering food online at home has increased, and almost become a common thing thus making it one of the most essential services required to be available all the time. Our application provides reliable, scalable and available Food Delivery service to its customers using the concepts learnt in Cloud & Distributed System course. 
 
-### Video Link
+## Video Link
 https://www.youtube.com/watch?v=VjeBGS4Tog4
 
 ## PPT Link
