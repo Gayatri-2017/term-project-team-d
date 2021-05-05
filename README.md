@@ -107,7 +107,7 @@ REST API
 
 ## Architecture Diagram
 
-![project_team](./readme_images/team-d.png)
+![architecture](./readme_images/architecture.png)
 
 ------------
 
