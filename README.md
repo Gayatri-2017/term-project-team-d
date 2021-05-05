@@ -193,3 +193,14 @@ aws cloudformation delete-stack --stack-name proj-scp-2021-jan-cmpt-756
 make -f az.mak stop
 make -f k8s.mak scratch
 ```
+
+## Team-D
+
+* [Abhishek Sundar Raman](https://www.linkedin.com/in/abhisheksundarraman/) (asundarr@sfu.ca)
+* [Anchal Jain](https://www.linkedin.com/in/anchal-jain-6b76863/) (anchalj@sfu.ca)
+* [Arnab Roy](https://www.linkedin.com/in/arnabroy93/)
+* [Gayatri Ganapathy](https://www.linkedin.com/in/gayatriganapathy/) (gganapat@sfu.ca)
+* [Madana Krishnan V K](https://www.linkedin.com/in/madankrishnanvk/) (madana_krishnan_vadakandara_krishnan@sfu.ca)
+
+
+![project_team](./readme_images/team-d.png)
