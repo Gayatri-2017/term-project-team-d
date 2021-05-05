@@ -105,6 +105,12 @@ REST API
 ```
 ------------
 
+## Architecture Diagram
+
+![project_team](./readme_images/team-d.png)
+
+------------
+
 Instructions for Project Execution
 ------------
 
